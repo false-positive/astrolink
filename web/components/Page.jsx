@@ -7,8 +7,13 @@ import {
   MediaQuery,
   Anchor,
   Center,
+  Menu,
+  Button,
+  Avatar,
+  UnstyledButton,
 } from '@mantine/core';
 import { useState } from 'react';
+import UserAvatar from './UserAvatar';
 
 const useStyles = createStyles((theme) => ({
   res_navbar: {
@@ -54,6 +59,19 @@ const Page = ({ children }) => {
               <Anchor className={classes.link}>Features</Anchor>
               <Anchor className={classes.link}>Pricing</Anchor>
             </div>
+            <Menu
+              sx={{ position: 'fixed', right: '1rem', top: '1.3rem' }}
+              control={
+                <UnstyledButton>
+                  <UserAvatar username="Amo"></UserAvatar>
+                </UnstyledButton>
+              }
+            >
+              {/* TODO fix logout */}
+              <Menu.Item component="a" href="http://localhost:8000/logout">
+                Logout
+              </Menu.Item>
+            </Menu>
           </Center>
         </Header>
       }

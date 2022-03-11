@@ -1,4 +1,5 @@
-import { Card, Text, Title } from '@mantine/core';
+import { Box, Card, Group, Text, Title } from '@mantine/core';
+import ProgressCard from './ProgressCard';
 import UsersRow from './UsersRow';
 
 const ProjectCard = ({ project }) => {
@@ -14,6 +15,12 @@ const ProjectCard = ({ project }) => {
             String.fromCharCode(i + 65)
           )}
         />
+      </Card.Section>
+      <Card.Section px="md" pb="xl">
+        <Group position="apart" spacing="xs">
+          <ProgressCard milestones={project.milestones} />
+          <Box>files</Box>
+        </Group>
       </Card.Section>
     </Card>
   );
