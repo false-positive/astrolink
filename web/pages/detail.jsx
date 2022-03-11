@@ -53,14 +53,17 @@ export const getStaticProps = () => {
         {
           id: 0,
           name: 'Test.txt',
+          lastModified: '2020-01-01',
         },
         {
           id: 1,
           name: 'Some File.txt',
+          lastModified: '2020-01-01',
         },
         {
           id: 2,
           name: 'Some File.txt',
+          lastModified: '2020-01-01',
         },
       ],
       project: {
