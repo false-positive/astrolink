@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Authentication user model, overwriting django's default using a modified model inherited from django.contrib.auth.models
+AUTH_USER_MODEL = 'api.User'
 
 # Application definition
 
