@@ -9,8 +9,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
     filebox: {
       cursor: 'pointer',
       background: fileboxColor,
-      width: '100%',
-      padding: '0.2rem 0.4rem',
+      width: '25rem',
+      padding: '0.5rem 0.75rem 0.5rem 0.75rem',
+      fontSize: '1.1rem',
       borderRadius: '0.5rem',
       display: 'flex',
       flexDirection: 'row',
@@ -22,16 +23,34 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 const FileSidebar = ({ files }) => {
+  // make a date with words instead of numbers from last modified date
+  const getDateWords = (date) => {
+    const month = date.toLocaleString('default', { month: 'long' });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+
   const { classes } = useStyles();
   return (
     <Sidebar side="right">
       <Group direction="column">
         {files.map((file) => (
           <Box className={classes.filebox} key={file.id}>
-            <Box as="span" sx={{ display: 'inline' }} px={2}>
-              <AiFillFileText className={classes.fileicon} />
-            </Box>
-            {file.name}
+            <Group
+              direction="column"
+              position="apart"
+              spacing="xs"
+              style={{ width: '100%' }}
+            >
+              <div>
+                <Box as="span" sx={{ display: 'inline' }} px={2}>
+                  <AiFillFileText className={classes.fileicon} />
+                </Box>
+                {file.name}
+              </div>
+              Last Modified {getDateWords(new Date(file.lastModified))}
+            </Group>
           </Box>
         ))}
       </Group>
