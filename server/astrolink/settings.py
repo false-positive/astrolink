@@ -51,6 +51,15 @@ INSTALLED_APPS = [
     'files',
 ]
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser'
+     )
+}
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
