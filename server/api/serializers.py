@@ -1,5 +1,8 @@
 from rest_framework import serializers
+
+
 from api.models import User, Team, Project, Milestone, Task
+from files.models import File
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,7 +32,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
     class Meta:
         model = Project
-        fields = ['name', 'team', 'description', 'milestones']
+        fields = ['name', 'team', 'description', 'milestones', 'id']
         depth = 1
 
 

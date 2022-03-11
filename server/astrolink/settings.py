@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # In-house
     'api',
+    'files',
 ]
 
 MIDDLEWARE = [

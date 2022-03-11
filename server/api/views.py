@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import Http404
+from django.core.files.storage import FileSystemStorage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +8,7 @@ from rest_framework import status
 from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer
 from api.models import Team, Project, Milestone, Task, User
 from api import serializers
+
 
 
 class TeamList(APIView):
@@ -94,3 +96,4 @@ class UserList(APIView):
         print(users)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
