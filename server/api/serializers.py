@@ -1,9 +1,12 @@
 from rest_framework import serializers
-from api.models import Person, Team, Project
+from api.models import User, Team, Project
 
-class PersonSerializer(serializers.ModelSerializer):
-    pass
 
+class UserSerializer(serializers.ModelSerializer):
+    teams = serializers.StringRelatedField(source='team_set',many=True)
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'teams', 'uuid']
 
 class TeamSerializer(serializers.ModelSerializer):
     members =  serializers.StringRelatedField(many=True)
@@ -11,6 +14,7 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ['name', 'description', 'project_set']
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
