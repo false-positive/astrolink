@@ -5,7 +5,7 @@ import FileSidebar from '../components/FileSidebar';
 
 const useStyles = createStyles((theme, _params, getRef) => {});
 
-export default function Home({ users, files }) {
+export default function Home({ project, users, files }) {
   // const { classes } = useStyles();
   return (
     <Page>
@@ -14,15 +14,10 @@ export default function Home({ users, files }) {
 
       <Center>
         <Container size="md">
-          <Center>
-            <Title order={1}>This is h1 title</Title>
+          <Center style={{ margin: '5rem 0 2rem 0' }}>
+            <Title order={1}>{project.title}</Title>
           </Center>
-          <Text size="lg">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
-            debitis, quod nostrum in architecto sint sunt quo, delectus
-            praesentium, dignissimos aliquid eligendi molestias voluptates? Vel
-            consectetur iusto inventore! In, id?
-          </Text>
+          <Text size="lg">{project.description}</Text>
         </Container>
       </Center>
     </Page>
@@ -68,6 +63,12 @@ export const getStaticProps = () => {
           name: 'Some File.txt',
         },
       ],
+      project: {
+        id: 0,
+        title: 'Test Project',
+        description:
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita officiis facilis amet ipsa eum nisi at exercitationem in, voluptatum dolores corrupti, quidem rerum illum fugit perspiciatis corporis dolorum ea!Lorem, Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed in doloremque, tempore repudiandae itaque odio iusto illo nobis voluptatem reprehenderit voluptates ipsum et unde alias eligendi labore blanditiis beatae magnam.',
+      },
     },
   };
 };
