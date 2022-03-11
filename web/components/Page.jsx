@@ -6,20 +6,26 @@ import {
   Burger,
   MediaQuery,
   Anchor,
+  Center,
 } from '@mantine/core';
 import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
-  navbar: {
+  res_navbar: {
     [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
   },
-
+  navbar: { padding: '1rem 0 4rem 0' },
   links: {
     [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
+  },
+  link: {
+    fontSize: '1.5rem',
+    margin: '0 2.5rem',
+    color: 'white',
   },
 }));
 
@@ -32,7 +38,7 @@ const Page = ({ children }) => {
       fixed
       navbarOffsetBreakpoint="sm"
       header={
-        <Header height={50}>
+        <Header height={50} className={classes.navbar}>
           <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
             <Burger
               opened={opened}
@@ -41,22 +47,24 @@ const Page = ({ children }) => {
               mr="xl"
             />
           </MediaQuery>
-          <div className={classes.links}>
-            <Anchor>Home</Anchor>
-            <Anchor>Features</Anchor>
-            <Anchor>Pricing</Anchor>
-          </div>
+          <Center>
+            <div className={classes.links}>
+              <Anchor className={classes.link}>Home</Anchor>
+              <Anchor className={classes.link}>Features</Anchor>
+              <Anchor className={classes.link}>Pricing</Anchor>
+            </div>
+          </Center>
         </Header>
       }
       navbar={
         <Navbar
-          className={classes.navbar}
+          className={classes.res_navbar}
           width={{ base: '100%', sm: 0 }}
           hidden={!opened}
         >
-          <Anchor>Home</Anchor>
-          <Anchor>Features</Anchor>
-          <Anchor>Pricing</Anchor>
+          <Anchor className={classes.link}>Home</Anchor>
+          <Anchor className={classes.link}>Features</Anchor>
+          <Anchor className={classes.link}>Pricing</Anchor>
         </Navbar>
       }
     >
