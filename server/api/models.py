@@ -64,7 +64,7 @@ class User(AbstractUser):
 
 class Team(models.Model):
     name = models.CharField(max_length=60)
-    description = models.CharField(max_length=300)
+    description = models.CharField(max_length=300, blank=True)
     members = models.ManyToManyField(User, blank=True)
 
     def __str__(self):
@@ -74,19 +74,22 @@ class Team(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=60)
     team = models.ForeignKey(Team, blank=True, on_delete=models.SET_NULL, null=True)
-    
+    description = models.CharField(max_length=500, blank=True)
+
     def __str__(self):
         return self.name
 
 class Milestone(models.Model):
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=500, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
 class Task(models.Model):
     name = models.CharField(max_length=60)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=500, blank=True)
     milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE)
 
     def __str__(self):

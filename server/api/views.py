@@ -31,7 +31,7 @@ class MilestoneList(APIView):
 class TaskList(APIView):
     def get(self, request, format=None):
         tasks = Task.objects.all()
-        serializer = ProjectSerializer(tasks, many=True)
+        serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
 
