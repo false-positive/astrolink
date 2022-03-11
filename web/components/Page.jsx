@@ -67,6 +67,9 @@ const Page = ({ children }) => {
                 </UnstyledButton>
               }
             >
+              <Menu.Item component="a" href="http://localhost:8000/logout">
+                Profile
+              </Menu.Item>
               {/* TODO fix logout */}
               <Menu.Item component="a" href="http://localhost:8000/logout">
                 Logout
