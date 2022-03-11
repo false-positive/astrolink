@@ -4,7 +4,7 @@ from django.db import models
 from api.models import Project
 
 def get_project_directory(instance, filename):
-    return './files/{0}/{1}'.format(instance.project.name, filename)
+    return './files/{0}/{1}/{2}'.format(instance.project.team.name, instance.project.name, filename)
 
 class File(models.Model):
     name = models.CharField(max_length=60)

@@ -11,7 +11,7 @@ const TasksTimeline = ({ tasks }) => {
       {tasks.map((task) => (
         <Timeline.Item
           key={task.id}
-          bullet={task.completed ? <span /> : null}
+          bullet={task.completed && <span />}
           title={task.name}
         >
           <Text color="dimmed" size="sm">
