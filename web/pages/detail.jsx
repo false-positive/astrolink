@@ -1,119 +1,16 @@
-import {
-  createStyles,
-  Title,
-  Text,
-  Center,
-  Container,
-  Group,
-  Button,
-  Paper,
-  Box,
-} from '@mantine/core';
-import Link from 'next/link';
+import { createStyles, Title, Text, Center, Container } from '@mantine/core';
 import Page from '../components/Page';
-import UserAvatar from '../components/UserAvatar';
-import { AiFillFileText } from 'react-icons/ai';
-import Sidebar from '../components/Sidebar';
-const useStyles = createStyles((theme, _params, getRef) => {
-  const fileboxColor =
-    theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1];
-  return {
-    container: {
-      padding: '1rem',
-      color: 'white',
-    },
-    title: {
-      fontSize: '5rem',
-      fontWeight: '500',
-      borderRadius: '0.5rem',
-      color: 'white',
-      padding: '0.5rem 3rem',
-      border: '1px solid white',
-      borderRadius: '1rem',
-      marginTop: '4rem',
-      background: theme.fn.rgba(theme.colors.violet[1], 0.25),
-    },
+import UserSidebar from '../components/UserSidebar';
+import FileSidebar from '../components/FileSidebar';
 
-    userbar: {
-      width: '17rem',
-      position: 'fixed',
-      zIndex: '1',
-      top: '100px',
-      left: '10px',
-      overflowX: 'hidden',
-    },
+const useStyles = createStyles((theme, _params, getRef) => {});
 
-    filebar: {
-      position: 'fixed',
-      zIndex: '1',
-      top: '100px',
-      right: '10px',
-      overflowX: 'hidden',
-      padding: '1rem 0',
-    },
-    filebox: {
-      cursor: 'pointer',
-      background: fileboxColor,
-      width: '100%',
-      padding: '0.2rem 0.4rem',
-      borderRadius: '0.5rem',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    fileicon: {
-      marginRight: '0.2rem',
-    },
-  };
-});
-
-export default function Home() {
-  const { classes } = useStyles();
+export default function Home({ users, files }) {
+  // const { classes } = useStyles();
   return (
     <Page>
-      <Sidebar side="left">
-        <Group direction="column">
-          <Group direction="row">
-            <UserAvatar username="Денис Мирчев"></UserAvatar>
-            <p>Развигор Разпоповничев</p>
-          </Group>
-          <Group direction="row">
-            <UserAvatar username="Денис Мирчев"></UserAvatar>
-            <p>Денис Мирчев</p>
-          </Group>
-          <Group direction="row">
-            <UserAvatar username="Денис Мирчев"></UserAvatar>
-            <p>Денис Мирчев</p>
-          </Group>
-          <Group direction="row">
-            <UserAvatar username="Денис Мирчев"></UserAvatar>
-            <p>Денис Мирчев</p>
-          </Group>
-        </Group>
-      </Sidebar>
-
-      <Sidebar side="right">
-        <Group direction="column">
-          <Box className={classes.filebox}>
-            <Box as="span" sx={{ display: 'inline' }} px={2}>
-              <AiFillFileText className={classes.fileicon} />
-            </Box>
-            Test.txt
-          </Box>
-          <Box className={classes.filebox}>
-            <Box as="span" sx={{ display: 'inline' }} px={2}>
-              <AiFillFileText className={classes.fileicon} />
-            </Box>
-            Some File.txt
-          </Box>
-          <Box className={classes.filebox}>
-            <Box as="span" sx={{ display: 'inline' }} px={2}>
-              <AiFillFileText className={classes.fileicon} />
-            </Box>
-            Some File.txt
-          </Box>
-        </Group>
-      </Sidebar>
+      <UserSidebar users={users} />
+      <FileSidebar files={files} />
 
       <Center>
         <Container size="md">
@@ -131,3 +28,46 @@ export default function Home() {
     </Page>
   );
 }
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      users: [
+        {
+          id: 0,
+          firstName: 'Денис',
+          lastName: 'Мирчев',
+        },
+        {
+          id: 1,
+          firstName: 'Божидар',
+          lastName: 'Павлов',
+        },
+        {
+          id: 2,
+          firstName: 'Калоян',
+          lastName: 'Миладинов',
+        },
+        {
+          id: 3,
+          firstName: 'Никола',
+          lastName: 'Сачков',
+        },
+      ],
+      files: [
+        {
+          id: 0,
+          name: 'Test.txt',
+        },
+        {
+          id: 1,
+          name: 'Some File.txt',
+        },
+        {
+          id: 2,
+          name: 'Some File.txt',
+        },
+      ],
+    },
+  };
+};
