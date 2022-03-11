@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
 
-from api.serializers import PersonSerializer, TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer
-from api.models import Person, Team, Project, Milestone, Task
+from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer
+from api.models import Team, Project, Milestone, Task
 
 class TeamList(APIView):
     def get(self, request, format=None):
@@ -31,3 +31,14 @@ class TaskList(APIView):
         tasks = Task.objects.all()
         serializer = ProjectSerializer(tasks, many=True)
         return Response(serializer.data)
+
+from api.serializers import UserSerializer
+
+from api.models import User
+
+class UserList(APIView):
+    def get(self, request, format=None):
+        users = User.objects.all()
+        print(users)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
