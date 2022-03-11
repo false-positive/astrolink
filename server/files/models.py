@@ -13,4 +13,4 @@ class File(models.Model):
     file = models.FileField(upload_to=get_project_directory, blank=True)
 
     def __str__(self):
-        return self.project.name + ':' + self.name
+        return self.project.name + ': ' + self.name
