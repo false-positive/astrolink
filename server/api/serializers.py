@@ -29,7 +29,7 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     team = serializers.StringRelatedField()
-    milestones = MilestoneSerializer(source='milestone_set', many=True)
+    milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
     class Meta:
         model = Project
         fields = ['name', 'team', 'description', 'milestones', 'id']
