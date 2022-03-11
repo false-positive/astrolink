@@ -78,4 +78,16 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+class Milestone(models.Model):
+    name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
+class Task(models.Model):
+    name = models.CharField(max_length=60)
+    description = models.CharField(max_length=500)
+    milestone = models.ForeignKey(Milestone)
+
+    def __str__(self):
+        return self.name
