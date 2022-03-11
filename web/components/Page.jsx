@@ -8,8 +8,6 @@ import {
   Anchor,
   Center,
   Menu,
-  Button,
-  Avatar,
   UnstyledButton,
 } from '@mantine/core';
 import { useState } from 'react';

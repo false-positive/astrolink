@@ -1,4 +1,6 @@
-import { Accordion, Card, Text } from '@mantine/core';
+import { Accordion, Card, Group, Text, useAccordionState } from '@mantine/core';
+import { useMemo } from 'react';
+import MilestoneProgress from './MilestoneProgress';
 import TasksTimeline from './TasksTimeline';
 
 const AccordionLabel = ({ label, description }) => (
@@ -11,26 +13,41 @@ const AccordionLabel = ({ label, description }) => (
 );
 
 const ProgressCard = ({ milestones }) => {
+  const [accordionState, accordionHandlers] = useAccordionState({});
+  const activeMilestone = useMemo(() => {
+    const activeIdx = Object.values(accordionState).findIndex((x) => x);
+    return activeIdx >= 0 ? milestones[activeIdx] : null;
+  }, [accordionState, milestones]);
   return (
-    <Card shadow="xl" withBorder sx={{ width: '100%', flex: 1 }}>
-      <Card.Section>
-        <Accordion>
-          {milestones.map((milestone) => (
-            <Accordion.Item
-              key={milestone.id}
-              label={
-                <AccordionLabel
-                  label={milestone.name}
-                  description={milestone.description}
-                />
-              }
-            >
-              <TasksTimeline tasks={milestone.tasks} />
-            </Accordion.Item>
-          ))}
-        </Accordion>
-      </Card.Section>
-    </Card>
+    <Group sx={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
+      <Card shadow="xl" withBorder sx={{ width: '100%', flex: 1 }}>
+        <Card.Section>
+          <Accordion
+            state={accordionState}
+            onChange={accordionHandlers.setState}
+          >
+            {milestones.map((milestone) => (
+              <Accordion.Item
+                key={milestone.id}
+                label={
+                  <AccordionLabel
+                    label={milestone.name}
+                    description={milestone.description}
+                  />
+                }
+              >
+                <TasksTimeline tasks={milestone.tasks} />
+              </Accordion.Item>
+            ))}
+          </Accordion>
+        </Card.Section>
+      </Card>
+      <Card shadow="xl" withBorder sx={{ width: '100%', flex: 1 }}>
+        <Card.Section>
+          {activeMilestone && <MilestoneProgress milestone={activeMilestone} />}
+        </Card.Section>
+      </Card>
+    </Group>
   );
 };
 
