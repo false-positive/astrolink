@@ -23,6 +23,14 @@ class TeamDetail(APIView):
         team = get_object_or_404(Team, pk=pk)
         serializer = TeamSerializer(team)
         return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        team = get_object_or_404(Team, pk=pk)
+        serializer = TeamSerializer(team, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProjectList(APIView):
@@ -45,6 +53,15 @@ class ProjectDetail(APIView):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
+    
+
+    def patch(self, request, pk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        serializer = ProjectSerializer(project, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MilestoneList(APIView):
