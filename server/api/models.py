@@ -87,7 +87,7 @@ class Milestone(models.Model):
 class Task(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=500)
-    milestone = models.ForeignKey(Milestone)
+    milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
