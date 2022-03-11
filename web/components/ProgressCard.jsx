@@ -1,6 +1,7 @@
 import { Accordion, Card, Group, Text, useAccordionState } from '@mantine/core';
 import { useMemo } from 'react';
 import MilestoneProgress from './MilestoneProgress';
+import ProjectProgress from './ProjectProgress';
 import TasksTimeline from './TasksTimeline';
 
 const AccordionLabel = ({ label, description }) => (
@@ -20,7 +21,13 @@ const ProgressCard = ({ milestones }) => {
   }, [accordionState, milestones]);
   return (
     <Group sx={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
-      <Card shadow="xl" withBorder sx={{ width: '100%', flex: 1 }}>
+      <Card
+        px={10}
+        py={35}
+        shadow="xl"
+        withBorder
+        sx={{ width: '100%', flex: 1 }}
+      >
         <Card.Section>
           <Accordion
             state={accordionState}
@@ -44,7 +51,11 @@ const ProgressCard = ({ milestones }) => {
       </Card>
       <Card shadow="xl" withBorder sx={{ width: '100%', flex: 1 }}>
         <Card.Section>
-          {activeMilestone && <MilestoneProgress milestone={activeMilestone} />}
+          {activeMilestone ? (
+            <MilestoneProgress milestone={activeMilestone} />
+          ) : (
+            <ProjectProgress milestones={milestones} />
+          )}
         </Card.Section>
       </Card>
     </Group>
