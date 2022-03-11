@@ -36,7 +36,7 @@ export const getStaticProps = () => {
                   id: 0,
                   name: 'Task 1',
                   description: 'Task 1 description',
-                  completed: false,
+                  completed: true,
                 },
                 {
                   id: 1,
@@ -48,7 +48,7 @@ export const getStaticProps = () => {
                   id: 2,
                   name: 'Task 3',
                   description: 'Task 3 description',
-                  completed: false,
+                  completed: true,
                 },
               ],
             },

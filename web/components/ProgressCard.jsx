@@ -1,4 +1,5 @@
 import { Accordion, Card, Text } from '@mantine/core';
+import TasksTimeline from './TasksTimeline';
 
 const AccordionLabel = ({ label, description }) => (
   <div>
@@ -24,7 +25,7 @@ const ProgressCard = ({ milestones }) => {
                 />
               }
             >
-              <pre>{JSON.stringify(milestone.tasks, null, 2)}</pre>
+              <TasksTimeline tasks={milestone.tasks} />
             </Accordion.Item>
           ))}
         </Accordion>
