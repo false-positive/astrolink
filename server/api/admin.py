@@ -6,6 +6,8 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
 from api.models import User, Team, Project, Milestone, Task
+from files.models import File
+
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -70,4 +72,4 @@ admin.site.register(Team)
 admin.site.register(Project)
 admin.site.register(Milestone)
 admin.site.register(Task)
-
+admin.site.register(File)
