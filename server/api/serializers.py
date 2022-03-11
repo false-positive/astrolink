@@ -17,19 +17,19 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'projects', 'members']
 
 
-class ProjectSerializer(serializers.ModelSerializer):
-    milestones = serializers.StringRelatedField(source='milestone_set', many=True)
-    class Meta:
-        model = Project
-        fields = ['name', 'team', 'description', 'milestones']
-        depth = 2
-
-
 class MilestoneSerializer(serializers.ModelSerializer):
     tasks = serializers.StringRelatedField(source='task_set', many=True)
     class Meta:
         model = Milestone
         fields = ['name', 'description', 'tasks']
+        depth = 1
+
+class ProjectSerializer(serializers.ModelSerializer):
+    team = serializers.StringRelatedField()
+    milestones = MilestoneSerializer(source='milestone_set', many=True)
+    class Meta:
+        model = Project
+        fields = ['name', 'team', 'description', 'milestones']
         depth = 1
 
 
