@@ -17,7 +17,7 @@ class TeamSerializer(serializers.ModelSerializer):
     projects = serializers.StringRelatedField(source='project_set', many=True)
     class Meta:
         model = Team
-        fields = ['name', 'description', 'projects', 'members']
+        fields = ['name', 'description', 'projects', 'members', 'id']
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
