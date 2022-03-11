@@ -1,4 +1,5 @@
 import { Avatar, AvatarsGroup, Box } from '@mantine/core';
+// import UserAvatar from './UserAvatar';
 
 const UsersRow = ({ users }) => {
   return (
