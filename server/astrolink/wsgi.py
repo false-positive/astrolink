@@ -1,5 +1,5 @@
 """
-WSGI config for ht8 project.
+WSGI config for astrolink project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ht8.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'astrolink.settings')
 
 application = get_wsgi_application()
