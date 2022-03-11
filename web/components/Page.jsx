@@ -35,6 +35,7 @@ const Page = ({ children }) => {
 
   return (
     <AppShell
+      style={{ paddingTop: '2rem' }}
       fixed
       navbarOffsetBreakpoint="sm"
       header={
