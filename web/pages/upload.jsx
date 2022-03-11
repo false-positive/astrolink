@@ -24,20 +24,6 @@ const UploadFile = () => {
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
-
-    // console.log(data);
-    // fetch('http://127.0.0.1:8000/api/files/', {
-    //   method: 'POST',
-
-    //   headers: { 'content-type': 'multipart/form-data' },
-    //   body: {
-    //     name: data.file[0].name,
-    //     file: data.file[0],
-    //     project: 1,
-    //   },
-    // })
-    //   .then((results) => results.json())
-    //   .then(console.log);
   };
 
   return (

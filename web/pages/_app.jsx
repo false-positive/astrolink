@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 export default function App(props) {
   const { Component, pageProps } = props;
@@ -12,7 +13,9 @@ export default function App(props) {
         colorScheme: 'dark',
       }}
     >
-      <Component {...pageProps} />
+      <NotificationsProvider>
+        <Component {...pageProps} />
+      </NotificationsProvider>
     </MantineProvider>
   );
 }
