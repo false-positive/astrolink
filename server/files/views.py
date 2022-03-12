@@ -38,8 +38,7 @@ class FileList(APIView):
         if rev_file:
             f_tmp = open(rev_file.file.path, 'rb')
             FILE = FileObject(f_tmp)
-            #FILE.name = '{0}.{1}'.format(rev_file.name, rev_file.extension)
-            serializer = RevSerializer(data={'name': rev_file.name, 'parent': rev_file.pk, 'file': FILE, 'extension': rev_file.extension})
+            serializer = RevSerializer(data={'name': rev_file.name, 'parent': rev_file.pk, 'file': FILE, 'mimetype': rev_file.mimetype})
             if not serializer.is_valid():
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             serializer.save(revision=self.__get_revision__(rev_file))

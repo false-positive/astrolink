@@ -5,18 +5,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer, AuthUserSerializer
+from api.serializers import WriteTeamSerializer, ReadTeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer, AuthUserSerializer
 from api.models import Team, Project, Milestone, Task, User
 
 
 class TeamList(APIView):
     def get(self, request, format=None):
         teams = Team.objects.all()
-        serializer = TeamSerializer(teams, many=True)
+        serializer = ReadTeamSerializer(teams, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = TeamSerializer(data=request.data)
+        serializer = WriteTeamSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,12 +26,12 @@ class TeamList(APIView):
 class TeamDetail(APIView):
     def get(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
-        serializer = TeamSerializer(team)
+        serializer = ReadTeamSerializer(team)
         return Response(serializer.data)
 
     def patch(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
-        serializer = TeamSerializer(team, request.data, partial=True)
+        serializer = WriteTeamSerializer(team, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -61,12 +61,12 @@ class ProjectList(APIView):
 
 
 class ProjectDetail(APIView):
-    def get(self, request, tk, pk, format=None):
+    def get(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
-    def patch(self, request, tk, pk, format=None):
+    def patch(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project, request.data, partial=True)
         if serializer.is_valid():
@@ -74,7 +74,7 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, tm, pk, format=None):
+    def delete(self, request, pk, format=None):
         project = self.get_object(pk)
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -131,8 +131,8 @@ class TaskList(APIView):
         last = milestone.task_set.last()
         if last:
             return last.query_id + 1
-        return 1    
-    
+        return 1
+
     def get(self, request, format=None):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
