@@ -78,6 +78,43 @@ export const getStaticProps = () => {
               ],
             },
           ],
+          files: [
+            {
+              id: 0,
+              name: 'File 1',
+              lastModified: '2020-01-01',
+            },
+            {
+              id: 1,
+              name: 'File 2',
+              lastModified: '2020-01-02',
+            },
+            {
+              id: 2,
+              name: 'File 3',
+              lastModified: '2020-01-03',
+            },
+            {
+              id: 3,
+              name: 'File 4',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 5',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 6',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 7',
+              lastModified: '2020-01-04',
+            },
+          ],
         },
         {
           id: 1,
@@ -133,6 +170,43 @@ export const getStaticProps = () => {
                   completed: false,
                 },
               ],
+            },
+          ],
+          files: [
+            {
+              id: 0,
+              name: 'File 1',
+              lastModified: '2020-01-01',
+            },
+            {
+              id: 1,
+              name: 'File 2',
+              lastModified: '2020-01-02',
+            },
+            {
+              id: 2,
+              name: 'File 3',
+              lastModified: '2020-01-03',
+            },
+            {
+              id: 3,
+              name: 'File 4',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 5',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 6',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 7',
+              lastModified: '2020-01-04',
             },
           ],
         },
