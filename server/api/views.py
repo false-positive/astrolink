@@ -5,18 +5,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer, AuthUserSerializer
+from api.serializers import WriteTeamSerializer, ReadTeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer, AuthUserSerializer
 from api.models import Team, Project, Milestone, Task, User
 
 
 class TeamList(APIView):
     def get(self, request, format=None):
         teams = Team.objects.all()
-        serializer = TeamSerializer(teams, many=True)
+        serializer = ReadTeamSerializer(teams, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = TeamSerializer(data=request.data)
+        serializer = WriteTeamSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,12 +26,12 @@ class TeamList(APIView):
 class TeamDetail(APIView):
     def get(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
-        serializer = TeamSerializer(team)
+        serializer = ReadTeamSerializer(team)
         return Response(serializer.data)
 
     def patch(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
-        serializer = TeamSerializer(team, request.data, partial=True)
+        serializer = WriteTeamSerializer(team, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
