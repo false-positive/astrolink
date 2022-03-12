@@ -2,7 +2,7 @@ import { Box, createStyles, Group } from '@mantine/core';
 import { AiFillFileText } from 'react-icons/ai';
 import Sidebar from './Sidebar';
 
-const useStyles = createStyles((theme, _params, getRef) => {
+const useStyles = createStyles((theme, _params, _getRef) => {
   const fileboxColor =
     theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1];
   return {

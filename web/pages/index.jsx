@@ -1,4 +1,4 @@
-import { Box, Button, Center, Group } from '@mantine/core';
+import { Button, Center, Group } from '@mantine/core';
 import Link from 'next/link';
 import WebsiteTitle from '../components/landing/WebsiteTitle';
 

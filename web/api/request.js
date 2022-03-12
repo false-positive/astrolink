@@ -1,6 +1,13 @@
-const makeRequest = (endpoint, options = {}) =>
-  // fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}/`, {
+export const makeNonJsonRequest = (endpoint, options = {}) =>
   fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}/`, {
+    ...options,
+    headers: {
+      ...options.headers,
+    },
+  });
+
+const makeRequest = (endpoint, options = {}) =>
+  makeNonJsonRequest(endpoint, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

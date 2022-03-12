@@ -1,3 +1,5 @@
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,13 +9,11 @@ from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializ
 from api.models import Team, Project, Milestone, Task, User
 
 
-
 class TeamList(APIView):
     def get(self, request, format=None):
         teams = Team.objects.all()
         serializer = TeamSerializer(teams, many=True)
         return Response(serializer.data)
-
 
     def post(self, request, format=None):
         serializer = TeamSerializer(data=request.data)
@@ -29,7 +29,6 @@ class TeamDetail(APIView):
         serializer = TeamSerializer(team)
         return Response(serializer.data)
 
-
     def patch(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
         serializer = TeamSerializer(team, request.data, partial=True)
@@ -38,7 +37,6 @@ class TeamDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
     def delete(self, request, pk, format=None):
         team = self.get_object(pk)
         team.delete()
@@ -50,7 +48,6 @@ class ProjectList(APIView):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
-
 
     def post(self, request, format=None):
         team_id = request.data['team']
@@ -69,7 +66,6 @@ class ProjectDetail(APIView):
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
-
     def patch(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project, request.data, partial=True)
@@ -78,7 +74,6 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
     def delete(self, request, pk, format=None):
         project = self.get_object(pk)
         project.delete()
@@ -92,19 +87,18 @@ class MilestoneList(APIView):
             return last.query_id + 1
         return 1
 
-
     def get(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         milestones = project.milestone_set.all()
         serializer = MilestoneSerializer(milestones, many=True)
         return Response(serializer.data)
 
-
     def post(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = MilestoneSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(project=project, query_id=self.__get_unique_project_id__(project))
+            serializer.save(project=project,
+                            query_id=self.__get_unique_project_id__(project))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -116,7 +110,6 @@ class MilestoneDetail(APIView):
         serializer = MilestoneSerializer(milestone)
         return Response(serializer.data)
 
-
     def patch(self, request, pk, mk, format=None):
         project = get_object_or_404(Project, pk=pk)
         milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
@@ -126,14 +119,11 @@ class MilestoneDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk, mk, format=None):
         project = get_object_or_404(Project, pk=pk)
         milestone = project.milestone_set.filter(query_id=mk)
         milestone.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
 
 class TaskList(APIView):
@@ -142,7 +132,7 @@ class TaskList(APIView):
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
-    #def post(self, request, format=None):
+    # def post(self, request, format=None):
     #    serializer = TaskSerializer(data=request.data)
     #    if serializer.is_valid():
     #        serializer.save()
@@ -157,29 +147,30 @@ class TaskDetail(APIView):
             return last.query_id + 1
         return 1
 
-
     def get(self, request, pk, mk, tk, format=None):
         project = get_object_or_404(Project, pk=pk)
-        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
+        task = get_object_or_404(
+            project.milestone_set.filter(query_id=mk), query_id=tk)
         serializer = TaskSerializer(task)
         return Response(serializer.data)
 
-
     def patch(self, request, pk, mk, tk, format=None):
         project = get_object_or_404(Project, pk=pk)
-        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
+        task = get_object_or_404(
+            project.milestone_set.filter(query_id=mk), query_id=tk)
         serializer = TaskSerializer(task, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk, mk, tk, format=None):
         project = get_object_or_404(Project, pk=pk)
-        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
+        task = get_object_or_404(
+            project.milestone_set.filter(query_id=mk), query_id=tk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class UserList(APIView):
     def get(self, request, format=None):
@@ -188,11 +179,27 @@ class UserList(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     def post(self, request, format=None):
-        user = User.objects.create_user(request.data['first_name'], request.data['last_name'], request.data['email'], request.data['password'])
+        # TODO fix authentication
+        user = User.objects.create_user(
+            request.data['first_name'], request.data['last_name'], request.data['email'], request.data['password'])
         user.save()
-        return Response("{'Result':'Success'}", status=status.HTTP_201_CREATED)
+
+        return Response({'Result': 'Success'}, status=status.HTTP_201_CREATED)
+
+
+# class UserLogin(APIView):
+#     def post(self, request, format=None):
+#         user = authenticate(email=request.data['email'],
+#                             password=request.data['password'])
+#         if not user:
+#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+#         login(request, user)
+
+#         token = Token.objects.get(user=user).key
+
+#         return Response({'Result': 'Success'}, status=status.HTTP_201_CREATED)
 
 
 class UserDetail(APIView):

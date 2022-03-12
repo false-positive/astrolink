@@ -1,21 +1,15 @@
-import {
-  Center,
-  Container,
-  Group,
-  Notification,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Center, Container, Group, Text, Title } from '@mantine/core';
 import { Dropzone } from '@mantine/dropzone';
 import { useState } from 'react/cjs/react.development';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNotifications } from '@mantine/notifications';
+import { useRouter } from 'next/router';
 import Page from '../components/Page';
 import FileList from '../components/FileList';
 
-import { getFiles } from '../api/file';
+import { getFiles, uploadFile } from '../api/file';
 
-export const dropzoneChildren = (status) => (
+export const dropzoneChildren = () => (
   <Group
     position="center"
     spacing="xl"
@@ -33,6 +27,7 @@ export const dropzoneChildren = (status) => (
 );
 
 const AllFiles = ({ files }) => {
+  const router = useRouter();
   const notifications = useNotifications();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,30 +42,23 @@ const AllFiles = ({ files }) => {
           loading={isLoading}
           onDrop={(uploadedFiles) => {
             setIsLoading(true);
-            uploadedFiles.forEach(async (file) => {
-              const formdata = new FormData();
-              formdata.append('name', file.name);
-              formdata.append(
-                'project',
-                '932603d2-2d5f-45a0-b05e-9f5fa607f500'
+            uploadedFiles.forEach(async (file, i) => {
+              const response = await uploadFile(
+                'f35ecdf6-ab2c-4a20-a31e-3d285349b633',
+                file
               );
-              formdata.append('file', file, file.name);
-
-              const requestOptions = {
-                method: 'POST',
-                body: formdata,
-                redirect: 'follow',
-              };
-
-              await fetch('http://localhost:8000/api/files/', requestOptions);
-              setIsLoading(false);
-
-              notifications.showNotification({
-                title: 'Files uploaded successfully',
-                icon: <BsFillCheckCircleFill size={20} />,
-                color: 'green',
-                autoClose: 3000,
-              });
+              if (response.ok) {
+                notifications.showNotification({
+                  title: `File ${file.name} uploaded successfully`,
+                  icon: <BsFillCheckCircleFill size={20} />,
+                  color: 'green',
+                  autoClose: 3000,
+                });
+                router.push(router.asPath, null, { scroll: false });
+              }
+              if (i === uploadedFiles.length - 1) {
+                setIsLoading(false);
+              }
             });
           }}
           mb={50}
@@ -91,10 +79,10 @@ const AllFiles = ({ files }) => {
 export default AllFiles;
 
 export const getServerSideProps = async () => {
-  // TODO add project id
+  const files = await getFiles('f35ecdf6-ab2c-4a20-a31e-3d285349b633');
   return {
     props: {
-      files: await getFiles(1),
+      files: files.reverse(),
     },
   };
 };
