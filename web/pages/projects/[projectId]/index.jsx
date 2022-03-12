@@ -15,10 +15,9 @@ import { useRouter } from 'next/router';
 import Page from '../../../components/Page';
 import UserSidebar from '../../../components/UserSidebar';
 import FileSidebar from '../../../components/FileSidebar';
+import MilestoneAccordion from '../../../components/MilestoneAccordion';
 import { getProject } from '../../../api/project';
-import { getMilestones, setMilestones } from '../../../api/milestone';
-import { getTasks } from '../../../api/task';
-import MilestoneAccordion1 from '../../../components/MilestoneAccordion1';
+import { setMilestones } from '../../../api/milestone';
 
 export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
@@ -72,8 +71,8 @@ export default function Home({ project, users, files }) {
               <Textarea
                 {...register('description')}
                 name="description"
-                placeholder="Description"
-                label="Description"
+                placeholder="Milestone Description"
+                label="Milestone Description"
                 size="md"
                 mb="4rem"
                 required
@@ -86,7 +85,7 @@ export default function Home({ project, users, files }) {
             </form>
           </Modal>
 
-          <MilestoneAccordion1 milestones={project.milestones} />
+          <MilestoneAccordion milestones={project.milestones} />
         </Container>
       </Center>
     </Page>
@@ -95,23 +94,13 @@ export default function Home({ project, users, files }) {
 
 export const getServerSideProps = async ({ params }) => {
   const { projectId } = params;
-  const milestones = await getMilestones(projectId);
-  const response = await Promise.all(
-    milestones.map(async (milestone) => {
-      const tasks = await getTasks(projectId, milestone.id);
-      return { ...milestone, tasks };
-    })
-  );
   try {
     const project = await getProject(projectId);
     return {
       props: {
         users: project.team.members,
         files: project.files,
-        project: {
-          ...project,
-          milestones: response,
-        },
+        project,
       },
     };
   } catch (e) {
