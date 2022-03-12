@@ -13,6 +13,8 @@ import { useNotifications } from '@mantine/notifications';
 import Page from '../components/Page';
 import FileList from '../components/FileList';
 
+import { getFiles } from '../api/file';
+
 export const dropzoneChildren = (status) => (
   <Group
     position="center"
@@ -31,6 +33,16 @@ export const dropzoneChildren = (status) => (
 );
 
 const AllFiles = ({ files }) => {
+  const a = async () => {
+    console.log(await getFiles(1));
+  };
+  a();
+
+  // console.log(process.env.NEXT_PUBLIC_API_URL);
+  // console.log(getFiles(1));
+  // const a = getFiles(1);
+  // console.log(await getFiles(1));
+
   const notifications = useNotifications();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,7 +60,10 @@ const AllFiles = ({ files }) => {
             uploadedFiles.forEach(async (file) => {
               const formdata = new FormData();
               formdata.append('name', file.name);
-              formdata.append('project', '1');
+              formdata.append(
+                'project',
+                '932603d2-2d5f-45a0-b05e-9f5fa607f500'
+              );
               formdata.append('file', file, file.name);
 
               const requestOptions = {
@@ -85,46 +100,15 @@ const AllFiles = ({ files }) => {
 
 export default AllFiles;
 
-export const getStaticProps = () => {
+export const getServerSideProps = async () => {
+  // console.log(process.env.NEXT_PUBLIC_API_URL);
+  // console.log(getFiles(1));
+  const allFiles = await getFiles(1);
+  console.log(allFiles);
+
   return {
     props: {
-      files: [
-        {
-          id: 0,
-          name: 'File 1',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 1,
-          name: 'File 2',
-          lastModified: '2020-01-02',
-        },
-        {
-          id: 2,
-          name: 'File 3',
-          lastModified: '2020-01-03',
-        },
-        {
-          id: 3,
-          name: 'File 4',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 4,
-          name: 'File 5',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 5,
-          name: 'File 6',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 6,
-          name: 'File 7',
-          lastModified: '2020-01-04',
-        },
-      ],
+      files: allFiles,
     },
   };
 };
