@@ -16,7 +16,7 @@ urlpatterns = [
     path('projects/<uuid:pk>/milestones/',
          views.MilestoneList.as_view(), name='milestones'),
     path('projects/<uuid:pk>/milestones/<int:mk>/',
-         views.MilestoneDetail.as_view(), name='milestones'),
+         views.MilestoneDetail.as_view(), name='milestone_detail'),
 
     path('tasks/', views.TaskList.as_view(), name='tasks'),
 

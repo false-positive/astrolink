@@ -1,7 +1,8 @@
-import { Box, createStyles, Group } from '@mantine/core';
+import { Box, createStyles, Group, Text } from '@mantine/core';
 import { AiFillFileText } from 'react-icons/ai';
+import FileMenu from './FileMenu';
 
-const useStyles = createStyles((theme, _params, getRef) => {
+const useStyles = createStyles((theme, _params, _getRef) => {
   const fileboxColor =
     theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1];
   return {
@@ -42,8 +43,12 @@ const FileList = ({ files, lastModified = true }) => {
               </Box>
               {file.name}
             </div>
-            {lastModified &&
-              `Last Modified ${getDateWords(new Date(file.lastModified))}`}
+            {lastModified && (
+              <Text color="dimmed" size="sm">
+                Last Modified {getDateWords(new Date(file.lastModified))}
+              </Text>
+            )}
+            <FileMenu file={file} />
           </Group>
         </Box>
       ))}

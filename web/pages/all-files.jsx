@@ -52,7 +52,7 @@ const AllFiles = ({ files }) => {
               formdata.append('name', file.name);
               formdata.append(
                 'project',
-                '932603d2-2d5f-45a0-b05e-9f5fa607f500'
+                'f35ecdf6-ab2c-4a20-a31e-3d285349b633'
               );
               formdata.append('file', file, file.name);
 
