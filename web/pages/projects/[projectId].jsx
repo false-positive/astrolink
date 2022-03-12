@@ -16,7 +16,8 @@ import Page from '../../components/Page';
 import UserSidebar from '../../components/UserSidebar';
 import FileSidebar from '../../components/FileSidebar';
 import MilestoneAccordion from '../../components/MilestoneAccordion';
-import { getMilestones, setMilestones } from '../../api/milestone';
+import { setMilestones } from '../../api/milestone';
+import { getProject } from '../../api/project';
 
 export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
@@ -93,92 +94,18 @@ export default function Home({ project, users, files }) {
 
 export const getServerSideProps = async ({ params }) => {
   const { projectId } = params;
-  const response = await getMilestones(projectId);
-
-  return {
-    props: {
-      project: {
-        id: 0,
-        name: `Project`,
-        description: 'This is a long description of the project. ',
-        milestones: response,
-        files: [
-          {
-            id: 0,
-            name: 'File 1',
-            lastModified: '2020-01-01',
-          },
-          {
-            id: 1,
-            name: 'File 2',
-            lastModified: '2020-01-02',
-          },
-          {
-            id: 2,
-            name: 'File 3',
-            lastModified: '2020-01-03',
-          },
-          {
-            id: 3,
-            name: 'File 4',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 5',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 6',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 7',
-            lastModified: '2020-01-04',
-          },
-        ],
+  try {
+    const project = await getProject(projectId);
+    return {
+      props: {
+        users: project.team.members,
+        files: project.files,
+        project,
       },
-      users: [
-        {
-          id: 0,
-          firstName: 'Денис',
-          lastName: 'Мирчев',
-        },
-        {
-          id: 1,
-          firstName: 'Божидар',
-          lastName: 'Павлов',
-        },
-        {
-          id: 2,
-          firstName: 'Калоян',
-          lastName: 'Миладинов',
-        },
-        {
-          id: 3,
-          firstName: 'Никола',
-          lastName: 'Сачков',
-        },
-      ],
-      files: [
-        {
-          id: 0,
-          name: 'Test.txt',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 1,
-          name: 'Some File.txt',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 2,
-          name: 'Some File.txt',
-          lastModified: '2020-01-01',
-        },
-      ],
-    },
-  };
+    };
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
 };
