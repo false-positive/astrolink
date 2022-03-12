@@ -1,4 +1,4 @@
-import { Container, Text, Title } from '@mantine/core';
+import { Container, Group, Text, Title } from '@mantine/core';
 import { getTeam } from '../../api/team';
 import Page from '../../components/Page';
 import UsersRow from '../../components/UsersRow';
@@ -13,12 +13,12 @@ const TeamDetailPage = ({ team }) => {
       </Container>
       <Container pt={25}>
         <Title order={2}>Projects</Title>
-        <Text>TODOOOOOOOOOOOOOOO</Text>
-        {/* <Group position="center" direction="column" spacing="lg">
-          {team.projects.map((project) => (
+        <Group position="center" direction="column" spacing="lg">
+          <Text>TODOOOOO.....</Text>
+          {/* {team.projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
-          ))}
-        </Group> */}
+          ))} */}
+        </Group>
       </Container>
     </Page>
   );

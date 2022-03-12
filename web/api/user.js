@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import makeRequest from './request';
 
-const toApiUser = ({ firstName, lastName, ...rest }) => ({
+export const toApiUser = ({ firstName, lastName, ...rest }) => ({
   ...rest,
   first_name: firstName,
   last_name: lastName,
@@ -28,7 +28,6 @@ export const login = async (data) => {
   if (response.ok) {
     const { token } = await response.json();
     Cookies.set('token', token, { expires: 7, sameSite: 'strict' });
-    console.log(response.status);
     if (response.status >= 200 && response.status < 300) return true;
     return false;
   }

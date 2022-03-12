@@ -26,14 +26,14 @@ class Rev(models.Model):
 
 
 class File(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=255)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to=get_project_directory)
     query_id = models.IntegerField(editable=False)
     date_added = models.DateTimeField(auto_now_add=True, null=True)
     date_changed = models.DateTimeField(auto_now=True, null=True)
     mimetype = models.CharField(max_length=256, blank=False)
-    
+
     def __str__(self):
         return self.project.name + ': ' + self.name
 

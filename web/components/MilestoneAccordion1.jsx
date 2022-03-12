@@ -26,8 +26,6 @@ const AccordionLabel = ({ label, description }) => (
 );
 
 const MilestoneAccordion1 = ({ state, onChange, milestones }) => {
-  // const [ta]
-
   const [opened, setOpened] = useState(false);
   const [curMilestone, setCurMilestone] = useState(null);
   const { register, handleSubmit, reset } = useForm();
@@ -113,7 +111,7 @@ const MilestoneAccordion1 = ({ state, onChange, milestones }) => {
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+xport const getServerSideProps = async ({ params }) => {
   const { projectId } = params;
 
   const milestones = await getMilestones(projectId);
@@ -208,6 +206,4 @@ export const getServerSideProps = async ({ params }) => {
       ],
     },
   };
-};
-
-export default MilestoneAccordion1;
+};export default MilestoneAccordion1;
