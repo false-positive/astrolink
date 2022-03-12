@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 
 from api.models import User, Team, Project, Milestone, Task
-from files.models import File
 
 class TeamField(serializers.RelatedField):
 
@@ -18,7 +17,7 @@ class TeamField(serializers.RelatedField):
         try:
             return get_object_or_404(self.get_queryset(), pk=uuid)
         except Http404:
-            raise serializers.ValidationError({'uuid': f'Team "{uuid}" not found'})
+            raise serializers.ValidationError({'team': f'Team with"{uuid}" not found'})
 
 
 class AuthUserSerializer(serializers.ModelSerializer):
@@ -43,10 +42,10 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
-    tasks = serializers.StringRelatedField(source='task_set', many=True)
+    tasks = serializers.StringRelatedField(source='task_set', many=True, required=False)
     class Meta:
         model = Milestone
-        fields = ['name', 'description', 'tasks']
+        fields = ['name', 'description', 'tasks', 'query_id']
         depth = 1
 
 

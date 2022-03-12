@@ -1,12 +1,10 @@
 from django.shortcuts import get_object_or_404
-from django.core.files.storage import FileSystemStorage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
 from api.serializers import TeamSerializer, ProjectSerializer, MilestoneSerializer, TaskSerializer, UserSerializer, AuthUserSerializer
 from api.models import Team, Project, Milestone, Task, User
-from api import serializers
 
 
 
@@ -72,28 +70,38 @@ class ProjectDetail(APIView):
 
 
 class MilestoneList(APIView):
-    def get(self, request, format=None):
-        milestones = Milestone.objects.all()
+    def __get_unique_project_id__(self, project):
+        last = project.milestone_set.last()
+        if last:
+            return last.query_id + 1
+        return 1
+
+    def get(self, request, pk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestones = project.milestone_set.all()
         serializer = MilestoneSerializer(milestones, many=True)
         return Response(serializer.data)
 
-    #def post(self, request, format=None):
-    #    serializer = MilestoneSerializer(data=request.data)
-    #    if serializer.is_valid():
-    #        serializer.save()
-    #        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, pk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        serializer = MilestoneSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(project=project, query_id=self.__get_unique_project_id__(project))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MilestoneDetail(APIView):
-    def get(self, request, pk, format=None):
-        milestone = get_object_or_404(Milestone, pk=pk)
+    def get(self, request, pk, mk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
         serializer = MilestoneSerializer(milestone)
         return Response(serializer.data)
 
-    def patch(self, request, pk, format=None):
-        milestones = get_object_or_404(Milestone, pk=pk)
-        serializer = MilestoneSerializer(milestones, request.data, partial=True)
+    def patch(self, request, pk, mk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
+        serializer = MilestoneSerializer(milestone, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

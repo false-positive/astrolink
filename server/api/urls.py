@@ -9,7 +9,8 @@ urlpatterns = [
     path('teams/<uuid:pk>', views.TeamDetail.as_view(), name='teamdetail'),
     path('projects', views.ProjectList.as_view(), name='projects'),
     path('projects/<uuid:pk>', views.ProjectDetail.as_view(), name='projectdetail'),
-    path('milestones', views.MilestoneList.as_view(), name='milestones'),
+    path('projects/<uuid:pk>/milestones', views.MilestoneList.as_view(), name='milestones'),
+    path('projects/<uuid:pk>/milestones/<int:mk>', views.MilestoneDetail.as_view(), name='milestones'),
     path('tasks', views.TaskList.as_view(), name='tasks'),
     path('files/', include('files.urls'), name='files'),
 ]

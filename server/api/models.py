@@ -80,10 +80,12 @@ class Project(models.Model):
         return self.name
 
 
+
 class Milestone(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    query_id = models.IntegerField(editable=False)
 
     def __str__(self):
         return self.name
