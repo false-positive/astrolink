@@ -18,7 +18,7 @@ const DashboardPage = ({ projects }) => {
 
 export default DashboardPage;
 
-export const getStaticProps = () => {
+export const getServerSideProps = () => {
   return {
     props: {
       projects: [
