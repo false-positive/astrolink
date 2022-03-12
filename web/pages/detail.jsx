@@ -2,8 +2,9 @@ import { Title, Text, Center, Container } from '@mantine/core';
 import Page from '../components/Page';
 import UserSidebar from '../components/UserSidebar';
 import FileSidebar from '../components/FileSidebar';
+import ProgressCard from '../components/ProgressCard';
 
-export default function Home({ project, users, files }) {
+export default function Home({ project, users, files, projects }) {
   return (
     <Page>
       <UserSidebar users={users} />
@@ -15,6 +16,8 @@ export default function Home({ project, users, files }) {
             <Title order={1}>{project.title}</Title>
           </Center>
           <Text size="lg">{project.description}</Text>
+
+          <ProgressCard milestones={projects[0].milestones} />
         </Container>
       </Center>
     </Page>
@@ -24,6 +27,196 @@ export default function Home({ project, users, files }) {
 export const getStaticProps = () => {
   return {
     props: {
+      projects: [
+        {
+          id: 0,
+          name: 'Project 1',
+          description: 'This is Project 1',
+          milestones: [
+            {
+              id: 0,
+              name: 'Milestone 1',
+              description: 'Milestone 1 description',
+              tasks: [
+                {
+                  id: 0,
+                  name: 'Task 1',
+                  description: 'Task 1 description',
+                  completed: true,
+                },
+                {
+                  id: 1,
+                  name: 'Task 2',
+                  description: 'Task 2 description',
+                  completed: false,
+                },
+                {
+                  id: 2,
+                  name: 'Task 3',
+                  description: 'Task 3 description',
+                  completed: true,
+                },
+              ],
+            },
+            {
+              id: 1,
+              name: 'Milestone 2',
+              description: 'Milestone 2 description',
+              tasks: [
+                {
+                  id: 0,
+                  name: 'Task 1',
+                  description: 'Task 1 description',
+                  completed: false,
+                },
+                {
+                  id: 1,
+                  name: 'Task 2',
+                  description: 'Task 2 description',
+                  completed: false,
+                },
+                {
+                  id: 2,
+                  name: 'Task 3',
+                  description: 'Task 3 description',
+                  completed: false,
+                },
+              ],
+            },
+          ],
+          files: [
+            {
+              id: 0,
+              name: 'File 1',
+              lastModified: '2020-01-01',
+            },
+            {
+              id: 1,
+              name: 'File 2',
+              lastModified: '2020-01-02',
+            },
+            {
+              id: 2,
+              name: 'File 3',
+              lastModified: '2020-01-03',
+            },
+            {
+              id: 3,
+              name: 'File 4',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 5',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 6',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 7',
+              lastModified: '2020-01-04',
+            },
+          ],
+        },
+        {
+          id: 1,
+          name: 'Project 2',
+          description: 'This is Project 2',
+          milestones: [
+            {
+              id: 0,
+              name: 'Milestone 1',
+              description: 'Milestone 1 description',
+              tasks: [
+                {
+                  id: 0,
+                  name: 'Task 1',
+                  description: 'Task 1 description',
+                  completed: false,
+                },
+                {
+                  id: 1,
+                  name: 'Task 2',
+                  description: 'Task 2 description',
+                  completed: false,
+                },
+                {
+                  id: 2,
+                  name: 'Task 3',
+                  description: 'Task 3 description',
+                  completed: false,
+                },
+              ],
+            },
+            {
+              id: 1,
+              name: 'Milestone 2',
+              description: 'Milestone 2 description',
+              tasks: [
+                {
+                  id: 0,
+                  name: 'Task 1',
+                  description: 'Task 1 description',
+                  completed: false,
+                },
+                {
+                  id: 1,
+                  name: 'Task 2',
+                  description: 'Task 2 description',
+                  completed: false,
+                },
+                {
+                  id: 2,
+                  name: 'Task 3',
+                  description: 'Task 3 description',
+                  completed: false,
+                },
+              ],
+            },
+          ],
+          files: [
+            {
+              id: 0,
+              name: 'File 1',
+              lastModified: '2020-01-01',
+            },
+            {
+              id: 1,
+              name: 'File 2',
+              lastModified: '2020-01-02',
+            },
+            {
+              id: 2,
+              name: 'File 3',
+              lastModified: '2020-01-03',
+            },
+            {
+              id: 3,
+              name: 'File 4',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 5',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 6',
+              lastModified: '2020-01-04',
+            },
+            {
+              id: 3,
+              name: 'File 7',
+              lastModified: '2020-01-04',
+            },
+          ],
+        },
+      ],
       users: [
         {
           id: 0,
