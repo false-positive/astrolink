@@ -15,7 +15,6 @@ class UserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name
         )
-
         user.set_password(password)
         user.save(using=self.db)
         return user
@@ -34,16 +33,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-# class Person(models.Model):
-#    class Meta:
-#        verbose_name_plural = 'people'
-#
-#    name = models.CharField(max_length=60, blank=True, default='')
-#    user = models.OneToOneField(User, on_delete=models.CASCADE)
-#    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#
-#    def __str__(self):
-#        return self.user.username
 class User(AbstractUser):
     username = None
     email = models.EmailField(

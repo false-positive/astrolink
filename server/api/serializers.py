@@ -12,7 +12,6 @@ class TeamField(serializers.RelatedField):
     def to_representation(self, team):
         return team.name
     
-
     def to_internal_value(self, uuid):
         try:
             return get_object_or_404(self.get_queryset(), pk=uuid)
@@ -28,6 +27,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     teams = serializers.StringRelatedField(source='team_set',many=True)
+    
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'teams', 'uuid']
@@ -36,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TeamSerializer(serializers.ModelSerializer):
     members =  serializers.StringRelatedField(many=True)
     projects = serializers.StringRelatedField(source='project_set', many=True)
+    
     class Meta:
         model = Team
         fields = ['name', 'description', 'projects', 'members', 'uuid']
@@ -43,6 +44,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
 class MilestoneSerializer(serializers.ModelSerializer):
     tasks = serializers.StringRelatedField(source='task_set', many=True, required=False)
+    
     class Meta:
         model = Milestone
         fields = ['name', 'description', 'tasks', 'query_id']
@@ -52,6 +54,7 @@ class MilestoneSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     team = TeamField()
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
+    
     class Meta:
         model = Project
         fields = ['name', 'team', 'description', 'milestones', 'uuid']
