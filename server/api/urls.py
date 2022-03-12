@@ -17,6 +17,7 @@ urlpatterns = [
          views.MilestoneList.as_view(), name='milestones'),
     path('projects/<uuid:pk>/milestones/<int:mk>/',
          views.MilestoneDetail.as_view(), name='milestone_detail'),
+    path('projects/<uuid:pk>/files/', include('files.urls'), name='files'),
 
     path('tasks/', views.TaskList.as_view(), name='tasks'),
 

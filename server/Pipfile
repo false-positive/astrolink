@@ -9,6 +9,7 @@ mysqlclient = "*"
 djangorestframework = "*"
 pillow = "*"
 django-cors-headers = "*"
+django-cleanup = "*"
 
 [dev-packages]
 
