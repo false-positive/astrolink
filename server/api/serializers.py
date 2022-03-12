@@ -1,8 +1,30 @@
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 
 from api.models import User, Team, Project, Milestone, Task
 from files.models import File
+
+class TeamField(serializers.RelatedField):
+
+    queryset = Team.objects.all()
+
+    def to_representation(self, team):
+        return team.name
+    
+
+    def to_internal_value(self, uuid):
+        try:
+            return get_object_or_404(self.get_queryset(), pk=uuid)
+        except Http404:
+            raise serializers.ValidationError({'uuid': f'Team "{uuid}" not found'})
+
+
+class AuthUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,7 +39,7 @@ class TeamSerializer(serializers.ModelSerializer):
     projects = serializers.StringRelatedField(source='project_set', many=True)
     class Meta:
         model = Team
-        fields = ['name', 'description', 'projects', 'members', 'id']
+        fields = ['name', 'description', 'projects', 'members', 'uuid']
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
@@ -29,12 +51,12 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    teams = serializers.StringRelatedField()
+    team = TeamField()
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
     class Meta:
         model = Project
-        fields = ['name', 'team', 'description', 'milestones', 'id']
-        depth = 1
+        fields = ['name', 'team', 'description', 'milestones', 'uuid']
+
 
 
 class TaskSerializer(serializers.ModelSerializer):

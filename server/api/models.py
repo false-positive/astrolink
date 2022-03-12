@@ -4,10 +4,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None):
-        if not email:
-            raise ValueError("Users must have an email address")
-        
+    def create_user(self, first_name, last_name, email, password=None):
+
         user = self.model(
             email=self.normalize_email(email),
             first_name=first_name,
@@ -66,6 +64,7 @@ class Team(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=300, blank=True)
     members = models.ManyToManyField(User, blank=True)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.name
@@ -73,11 +72,13 @@ class Team(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=60)
-    team = models.ForeignKey(Team, blank=True, on_delete=models.SET_NULL, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     description = models.CharField(max_length=500, blank=True)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.name
+
 
 class Milestone(models.Model):
     name = models.CharField(max_length=100)
@@ -86,6 +87,7 @@ class Milestone(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Task(models.Model):
     name = models.CharField(max_length=60)
