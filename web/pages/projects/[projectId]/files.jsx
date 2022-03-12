@@ -4,10 +4,10 @@ import { useState } from 'react/cjs/react.development';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNotifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import Page from '../components/Page';
-import FileList from '../components/FileList';
+import Page from '../../../components/Page';
+import FileList from '../../../components/FileList';
 
-import { getFiles, uploadFile } from '../api/file';
+import { getFiles, uploadFile } from '../../../api/file';
 
 export const dropzoneChildren = () => (
   <Group
@@ -43,10 +43,7 @@ const AllFiles = ({ files }) => {
           onDrop={(uploadedFiles) => {
             setIsLoading(true);
             uploadedFiles.forEach(async (file, i) => {
-              const response = await uploadFile(
-                'f35ecdf6-ab2c-4a20-a31e-3d285349b633',
-                file
-              );
+              const response = await uploadFile(router.query.projectId, file);
               if (response.ok) {
                 notifications.showNotification({
                   title: `File ${file.name} uploaded successfully`,
@@ -78,8 +75,9 @@ const AllFiles = ({ files }) => {
 
 export default AllFiles;
 
-export const getServerSideProps = async () => {
-  const files = await getFiles('f35ecdf6-ab2c-4a20-a31e-3d285349b633');
+export const getServerSideProps = async ({ params }) => {
+  const { projectId } = params;
+  const files = await getFiles(projectId);
   return {
     props: {
       files: files.reverse(),

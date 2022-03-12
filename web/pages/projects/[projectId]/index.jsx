@@ -12,12 +12,11 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import Page from '../../components/Page';
-import UserSidebar from '../../components/UserSidebar';
-import FileSidebar from '../../components/FileSidebar';
-import MilestoneAccordion from '../../components/MilestoneAccordion';
-import { setMilestones } from '../../api/milestone';
-import { getProject } from '../../api/project';
+import Page from '../../../components/Page';
+import UserSidebar from '../../../components/UserSidebar';
+import FileSidebar from '../../../components/FileSidebar';
+import MilestoneAccordion from '../../../components/MilestoneAccordion';
+import { getProject } from '../../../api/project';
 
 export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
