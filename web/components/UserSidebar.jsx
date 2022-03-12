@@ -7,7 +7,7 @@ const UserSidebar = ({ users }) => {
     <Sidebar side="left">
       <Group direction="column">
         {users.map((user) => (
-          <Group direction="row" key={user.id}>
+          <Group direction="row" key={user.uuid}>
             <UserAvatar
               username={`${user.firstName} ${user.lastName}`}
             ></UserAvatar>
