@@ -61,12 +61,12 @@ class ProjectList(APIView):
 
 
 class ProjectDetail(APIView):
-    def get(self, request, tk, pk, format=None):
+    def get(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
-    def patch(self, request, tk, pk, format=None):
+    def patch(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project, request.data, partial=True)
         if serializer.is_valid():
@@ -74,7 +74,7 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, tm, pk, format=None):
+    def delete(self, request, pk, format=None):
         project = self.get_object(pk)
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
