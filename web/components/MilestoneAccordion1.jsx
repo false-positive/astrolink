@@ -13,8 +13,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import TasksTimeline from './TasksTimeline';
-import { getTasks, setTasks } from '../api/task';
-import { getMilestones } from '../api/milestone';
+import { setTasks } from '../api/task';
 
 const AccordionLabel = ({ label, description }) => (
   <div>
@@ -111,99 +110,4 @@ const MilestoneAccordion1 = ({ state, onChange, milestones }) => {
   );
 };
 
-xport const getServerSideProps = async ({ params }) => {
-  const { projectId } = params;
-
-  const milestones = await getMilestones(projectId);
-  const response = milestones.map(async (milestone) => {
-    const tasks = await getTasks(projectId, milestone.id);
-    return { ...milestone, tasks };
-  });
-
-  return {
-    props: {
-      project: {
-        id: 0,
-        name: `Project1${response.tasks}`,
-        description: 'Thisdsadsa is a long description of the project. ',
-        milestones: response,
-        files: [
-          {
-            id: 0,
-            name: 'File 1',
-            lastModified: '2020-01-01',
-          },
-          {
-            id: 1,
-            name: 'File 2',
-            lastModified: '2020-01-02',
-          },
-          {
-            id: 2,
-            name: 'File 3',
-            lastModified: '2020-01-03',
-          },
-          {
-            id: 3,
-            name: 'File 4',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 5',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 6',
-            lastModified: '2020-01-04',
-          },
-          {
-            id: 3,
-            name: 'File 7',
-            lastModified: '2020-01-04',
-          },
-        ],
-      },
-      users: [
-        {
-          id: 0,
-          firstName: 'Денис',
-          lastName: 'Мирчев',
-        },
-        {
-          id: 1,
-          firstName: 'Божидар',
-          lastName: 'Павлов',
-        },
-        {
-          id: 2,
-          firstName: 'Калоян',
-          lastName: 'Миладинов',
-        },
-        {
-          id: 3,
-          firstName: 'Никола',
-          lastName: 'Сачков',
-        },
-      ],
-      files: [
-        {
-          id: 0,
-          name: 'Test.txt',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 1,
-          name: 'Some File.txt',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 2,
-          name: 'Some File.txt',
-          lastModified: '2020-01-01',
-        },
-      ],
-    },
-  };
-};export default MilestoneAccordion1;
+export default MilestoneAccordion1;

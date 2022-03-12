@@ -8,9 +8,9 @@ const TasksTimeline = ({ tasks }) => {
   );
   return (
     <Timeline active={active} bulletSize={24} lineWidth={2}>
-      {tasks.map((task) => (
+      {tasks.map((task, id) => (
         <Timeline.Item
-          key={task.id}
+          key={id}
           // bullet={task.completed && <span />}
           title={task.name}
         >
