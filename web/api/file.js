@@ -1,13 +1,21 @@
+/* eslint-disable camelcase */
 import makeRequest, { makeNonJsonRequest } from './request';
 
-// eslint-disable-next-line camelcase
-export const fromApiFiles = ({ query_id, ...rest }) => ({
-  // eslint-disable-next-line camelcase
+export const fromApiFiles = ({
+  query_id,
+  last_modified,
+  created_at,
+  ...rest
+}) => ({
   id: query_id,
+  lastModified: last_modified,
+  createdAt: created_at,
   ...rest,
 });
-export const toApiFiles = ({ id, ...rest }) => ({
+export const toApiFiles = ({ id, lastModified, createdAt, ...rest }) => ({
   query_id: id,
+  last_modified: lastModified,
+  created_at: createdAt,
   ...rest,
 });
 
@@ -28,4 +36,11 @@ export const uploadFile = (projectId, file) => {
     method: 'POST',
     body: formdata,
   });
+};
+
+export const deleteFile = async (projectId, fileId) => {
+  const response = makeRequest(`/projects/${projectId}/files/${fileId}`, {
+    method: 'DELETE',
+  });
+  return response.status === 204;
 };
