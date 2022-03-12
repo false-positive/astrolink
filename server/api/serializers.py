@@ -54,6 +54,7 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     # team = TeamField()
+    team = TeamSerializer()
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
 
     class Meta:
