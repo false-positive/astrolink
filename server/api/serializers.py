@@ -57,7 +57,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ['name', 'team', 'description', 'milestones', 'uuid']
 
 
-
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
