@@ -1,5 +1,18 @@
 import makeRequest, { makeNonJsonRequest } from './request';
 
+// eslint-disable-next-line camelcase
+export const fromApiFiles = ({ pk, query_id, ...rest }) => ({
+  id: pk,
+  // eslint-disable-next-line camelcase
+  queryId: query_id,
+  ...rest,
+});
+export const toApiFiles = ({ queryId, ...rest }) => ({
+  pk: rest.id,
+  query_id: queryId,
+  ...rest,
+});
+
 export const getFiles = async (projectId) => {
   const response = await makeRequest(`/projects/${projectId}/files`);
   const apiFiles = await response.json();
