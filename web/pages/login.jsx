@@ -37,7 +37,7 @@ const Login = () => {
         </Center>
         <Center sx={{ width: '100%' }}>
           <Text>
-            Don't have an account?{' '}
+            {"Don't have an account? "}
             <Link href="/register" passHref>
               <Anchor>Create one!</Anchor>
             </Link>

@@ -3,7 +3,7 @@ import { Dropzone } from '@mantine/dropzone';
 import { useState } from 'react/cjs/react.development';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNotifications } from '@mantine/notifications';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Page from '../components/Page';
 import FileList from '../components/FileList';
 

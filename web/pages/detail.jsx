@@ -1,12 +1,9 @@
-import { createStyles, Title, Text, Center, Container } from '@mantine/core';
+import { Title, Text, Center, Container } from '@mantine/core';
 import Page from '../components/Page';
 import UserSidebar from '../components/UserSidebar';
 import FileSidebar from '../components/FileSidebar';
 
-const useStyles = createStyles((theme, _params, getRef) => {});
-
 export default function Home({ project, users, files }) {
-  // const { classes } = useStyles();
   return (
     <Page>
       <UserSidebar users={users} />
