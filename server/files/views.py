@@ -30,7 +30,7 @@ class FileList(APIView):
         files = project.file_set.all()
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
     def post(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)

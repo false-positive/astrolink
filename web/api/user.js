@@ -6,6 +6,14 @@ const toApiUser = ({ firstName, lastName, ...rest }) => ({
   first_name: firstName,
   last_name: lastName,
 });
+// eslint-disable-next-line camelcase
+export const fromApiUser = ({ first_name, last_name, ...rest }) => ({
+  ...rest,
+  // eslint-disable-next-line camelcase
+  firstName: first_name,
+  // eslint-disable-next-line camelcase
+  lastName: last_name,
+});
 
 export const login = async (data) => {
   const newData = {
@@ -25,9 +33,9 @@ export const login = async (data) => {
     return false;
   }
 
-  const errors = await response.json();
-  return false;
+  // const errors = await response.json();
   // throw errors;
+  return false;
 };
 
 export const register = async (data) => {
@@ -39,7 +47,7 @@ export const register = async (data) => {
   if (response.ok) {
     return login({ email: data.email, password: data.password });
   }
-  const errors = await response.json();
-  return false;
+  // const errors = await response.json();
   // throw errors;
+  return false;
 };

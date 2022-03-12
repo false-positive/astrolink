@@ -1,7 +1,7 @@
 import makeRequest from './request';
 
-const fromApiTeam = ({ uuid, ...rest }) => ({ ...rest, id: uuid });
-const toApiTeam = ({ id, ...rest }) => ({ ...rest, uuid: id });
+export const fromApiTeam = ({ uuid, ...rest }) => ({ ...rest, id: uuid });
+export const toApiTeam = ({ id, ...rest }) => ({ ...rest, uuid: id });
 
 export const getTeam = async (uuid) => {
   const response = await makeRequest(`/teams/${uuid}`);
