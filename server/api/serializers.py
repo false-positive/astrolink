@@ -53,12 +53,13 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    team = TeamField()
+    # team = TeamField()
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
 
     class Meta:
         model = Project
         fields = ['name', 'team', 'description', 'milestones', 'uuid']
+        depth = 1
 
 
 class TaskSerializer(serializers.ModelSerializer):
