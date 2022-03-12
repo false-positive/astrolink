@@ -80,7 +80,7 @@ class ReadTeamSerializer(serializers.ModelSerializer):
     members = UserSerializer(many=True, read_only=True)
     class Meta:
         model = Team
-        fields = ['name', 'description', 'project_set', 'members', 'uuid']
+        fields = ['name', 'description', 'projects', 'members', 'uuid']
         depth = 1
 
 
@@ -94,7 +94,6 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    # team = TeamField()
     team = ReadTeamSerializer()
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
     files = serializers.StringRelatedField(source='file_set', many=True)
