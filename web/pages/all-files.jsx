@@ -33,16 +33,6 @@ export const dropzoneChildren = (status) => (
 );
 
 const AllFiles = ({ files }) => {
-  const a = async () => {
-    console.log(await getFiles(1));
-  };
-  a();
-
-  // console.log(process.env.NEXT_PUBLIC_API_URL);
-  // console.log(getFiles(1));
-  // const a = getFiles(1);
-  // console.log(await getFiles(1));
-
   const notifications = useNotifications();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -101,14 +91,10 @@ const AllFiles = ({ files }) => {
 export default AllFiles;
 
 export const getServerSideProps = async () => {
-  // console.log(process.env.NEXT_PUBLIC_API_URL);
-  // console.log(getFiles(1));
-  const allFiles = await getFiles(1);
-  console.log(allFiles);
-
+  // TODO add project id
   return {
     props: {
-      files: allFiles,
+      files: await getFiles(1),
     },
   };
 };
