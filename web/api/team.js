@@ -1,7 +1,16 @@
 import makeRequest from './request';
+import { fromApiUser, toApiUser } from './user';
 
-export const fromApiTeam = ({ uuid, ...rest }) => ({ ...rest, id: uuid });
-export const toApiTeam = ({ id, ...rest }) => ({ ...rest, uuid: id });
+export const fromApiTeam = ({ uuid, members, ...rest }) => ({
+  ...rest,
+  members: members.map(fromApiUser),
+  id: uuid,
+});
+export const toApiTeam = ({ id, members, ...rest }) => ({
+  ...rest,
+  members: members.map(toApiUser),
+  uuid: id,
+});
 
 export const getTeam = async (uuid) => {
   const response = await makeRequest(`/teams/${uuid}`);
