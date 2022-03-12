@@ -28,7 +28,6 @@ export const login = async (data) => {
   if (response.ok) {
     const { token } = await response.json();
     Cookies.set('token', token, { expires: 7, sameSite: 'strict' });
-    console.log(respons > e.status);
     if (response.status >= 200 && response.status < 300) return true;
     return false;
   }

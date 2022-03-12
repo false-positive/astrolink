@@ -6,6 +6,9 @@ const UsersRow = ({ users }) => {
   const [showAll, setShowAll] = useState(false);
 
   const limit = showAll ? users.length : 5;
+  const usernames = users.map(
+    ({ firstName, lastName }) => `${firstName} ${lastName}`
+  );
 
   return (
     <Box
@@ -13,7 +16,7 @@ const UsersRow = ({ users }) => {
       onClick={() => setShowAll(!showAll)}
     >
       <AvatarsGroup limit={limit}>
-        {users.map((user, i) => (
+        {usernames.map((user, i) => (
           <Avatar key={i} radius="xl" color="grape">
             {user.charAt(0).toUpperCase()}
           </Avatar>
