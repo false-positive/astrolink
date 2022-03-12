@@ -2,22 +2,19 @@ import {
   fromApiProjectShallow,
   toApiProjectShallow,
 } from './converters/project';
-import { getFiles } from './file';
 import makeRequest from './request';
 import { fromApiUser, toApiUser } from './user';
 
-// eslint-disable-next-line camelcase
-export const fromApiTeam = ({ uuid, project_set, members, ...rest }) => ({
+export const fromApiTeam = ({ uuid, projects, members, ...rest }) => ({
   ...rest,
   members: members.map(fromApiUser),
-  // eslint-disable-next-line camelcase
-  projects: project_set.map(fromApiProjectShallow),
+  projects: projects.map(fromApiProjectShallow),
   id: uuid,
 });
 export const toApiTeam = ({ id, projects, members, ...rest }) => ({
   ...rest,
   members: members.map(toApiUser),
-  project_set: projects.map(toApiProjectShallow),
+  project: projects.map(toApiProjectShallow),
   uuid: id,
 });
 

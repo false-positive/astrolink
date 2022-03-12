@@ -24,7 +24,7 @@ export const uploadFile = (projectId, file) => {
   formdata.append('name', file.name);
   formdata.append('project', projectId);
   formdata.append('file', file, file.name);
-  formdata.append('extension', 'exe');
+  formdata.append('mimetype', file.type);
 
   return makeNonJsonRequest(`/projects/${projectId}/files`, {
     method: 'POST',

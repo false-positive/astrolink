@@ -17,6 +17,7 @@ import UserSidebar from '../../../components/UserSidebar';
 import FileSidebar from '../../../components/FileSidebar';
 import MilestoneAccordion from '../../../components/MilestoneAccordion';
 import { getProject } from '../../../api/project';
+import { setMilestones } from '../../../api/milestone';
 
 export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
@@ -102,7 +103,8 @@ export const getServerSideProps = async ({ params }) => {
         project,
       },
     };
-  } catch {
+  } catch (e) {
+    console.error(e);
     return {
       notFound: true,
     };

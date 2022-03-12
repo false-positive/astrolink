@@ -1,7 +1,6 @@
 import { Container, Group, Text, Title } from '@mantine/core';
 import { getTeam } from '../../api/team';
 import Page from '../../components/Page';
-import ProjectCard from '../../components/ProjectCard';
 import UsersRow from '../../components/UsersRow';
 
 const TeamDetailPage = ({ team }) => {
