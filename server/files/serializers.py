@@ -17,5 +17,5 @@ class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = File
-        fields = ['pk', 'project', 'name', 'mimetype',
+        fields = ['project', 'name', 'mimetype',
                   'file', 'revisions', 'query_id', 'date_added', 'date_changed']

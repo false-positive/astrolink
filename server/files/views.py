@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File as FileObject
@@ -46,7 +47,7 @@ class FileList(APIView):
             rev_file.file.delete()
             serializer = FileSerializer(rev_file, data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(date_added=rev_file.date_added, date_changed=rev_file.date_changed)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -70,3 +71,47 @@ class FileDetail(APIView):
         file = get_object_or_404(project.file_set.all(), query_id=fk)
         file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class FileDownload(APIView):
+    def get(self, request, pk, fk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        file = get_object_or_404(project.file_set.all(), query_id=fk)
+        return FileResponse(file.file, as_attachment=True)
+
+
+class RevList(APIView):
+    def get(self, request, pk, fk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        file = get_object_or_404(project.file_set.all(), query_id=fk)
+        serializer = RevSerializer(file.rev_set.all(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RevDetail(APIView):
+    def get(self, request, pk, fk, rk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        file = get_object_or_404(project.file_set.all(), query_id=fk)
+        rev = file.rev_set.filter(revision=rk)
+        serializer = RevSerializer(rev, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def delete(self, request, pk, fk, rk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        file = get_object_or_404(project.file_set.all(), query_id=fk)
+        rev = file.rev_set.filter(revision=rk)
+        rev.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class RevDownload(APIView):
+    def get(self, request, pk, fk, rk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        file = get_object_or_404(project.file_set.all(), query_id=fk)
+        rev = file.rev_set.filter(revision=rk)[0]
+        return FileResponse(rev.file, as_attachment=True)
+
+
+
+

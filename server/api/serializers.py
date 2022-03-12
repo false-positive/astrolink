@@ -1,3 +1,4 @@
+from math import frexp
 from re import search
 from wsgiref import validate
 from django.http import Http404
@@ -6,6 +7,10 @@ from rest_framework import serializers
 
 
 from api.models import User, Team, Project, Milestone, Task
+
+
+from files.serializers import FileSerializer
+
 
 
 class TeamField(serializers.RelatedField):
@@ -36,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'email', 'teams', 'uuid']
 
 
-class WriteTeamSerializer(serializers.ModelSerializer):
+class TeamWriteSerializer(serializers.ModelSerializer):
     projects = serializers.StringRelatedField(source='project_set',many=True, required=False)
 
 
@@ -75,7 +80,17 @@ class WriteTeamSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'projects', 'members', 'uuid']
 
 
-class ReadTeamSerializer(serializers.ModelSerializer):
+
+class MilestoneSerializer(serializers.ModelSerializer):
+    tasks = serializers.StringRelatedField(source='task_set', many=True, required=False)
+
+    class Meta:
+        model = Milestone
+        fields = ['name', 'description', 'tasks', 'query_id']
+        depth = 1
+
+
+class TeamReadSerializer(serializers.ModelSerializer):
     projects = serializers.StringRelatedField(source='project_set',many=True, required=False)
     members = UserSerializer(many=True, read_only=True)
     class Meta:
@@ -94,9 +109,9 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    team = ReadTeamSerializer()
+    team = TeamReadSerializer(read_only=True)
     milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
-    files = serializers.StringRelatedField(source='file_set', many=True)
+    files = FileSerializer(source='file_set', many=True, read_only=True)
     
     class Meta:
         model = Project
