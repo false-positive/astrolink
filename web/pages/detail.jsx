@@ -1,8 +1,9 @@
-import { Title, Text, Center, Container } from '@mantine/core';
+import { Title, Text, Center, Container, Button } from '@mantine/core';
 import Page from '../components/Page';
 import UserSidebar from '../components/UserSidebar';
 import FileSidebar from '../components/FileSidebar';
 import ProgressCard from '../components/ProgressCard';
+import MilestoneAccordion from '../components/MilestoneAccordion';
 
 export default function Home({ project, users, files, projects }) {
   return (
@@ -15,9 +16,21 @@ export default function Home({ project, users, files, projects }) {
           <Center style={{ margin: '5rem 0 2rem 0' }}>
             <Title order={1}>{project.title}</Title>
           </Center>
-          <Text size="lg">{project.description}</Text>
+          <Text size="lg" mb="5rem">
+            {project.description}
+          </Text>
 
-          <ProgressCard milestones={projects[0].milestones} />
+          <Button size="md" mb="2rem">
+            Create New Milestone
+          </Button>
+
+          <MilestoneAccordion
+            // state={accordionState}
+            // onChange={accordionHandlers.setState}
+            milestones={projects[0].milestones}
+          />
+
+          {/* <ProgressCard milestones={projects[0].milestones} /> */}
         </Container>
       </Center>
     </Page>
