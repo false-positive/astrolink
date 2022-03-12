@@ -44,12 +44,12 @@ class TeamDetail(APIView):
 
 
 class ProjectList(APIView):
-    def get(self, request, tm, format=None):
+    def get(self, request, format=None):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
-    def post(self, request, tm, format=None):
+    def post(self, request, format=None):
         team_id = request.data['team']
         print(team_id)
         team_object = get_object_or_404(Team, pk=team_id)
@@ -131,8 +131,8 @@ class TaskList(APIView):
         last = milestone.task_set.last()
         if last:
             return last.query_id + 1
-        return 1    
-    
+        return 1
+
     def get(self, request, format=None):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
