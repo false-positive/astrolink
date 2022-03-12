@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third party
     'rest_framework',
     "corsheaders",
+    'django_cleanup',
 
 
     # In-house
