@@ -44,12 +44,12 @@ class TeamDetail(APIView):
 
 
 class ProjectList(APIView):
-    def get(self, request, format=None):
+    def get(self, request, tm, format=None):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
+    def post(self, request, tm, format=None):
         team_id = request.data['team']
         print(team_id)
         team_object = get_object_or_404(Team, pk=team_id)
@@ -61,12 +61,12 @@ class ProjectList(APIView):
 
 
 class ProjectDetail(APIView):
-    def get(self, request, pk, format=None):
+    def get(self, request, tk, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
 
-    def patch(self, request, pk, format=None):
+    def patch(self, request, tk, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project, request.data, partial=True)
         if serializer.is_valid():
@@ -74,7 +74,7 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, tm, pk, format=None):
         project = self.get_object(pk)
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -127,26 +127,27 @@ class MilestoneDetail(APIView):
 
 
 class TaskList(APIView):
+    def __get_unique_task_id__(self, milestone):
+        last = milestone.task_set.last()
+        if last:
+            return last.query_id + 1
+        return 1    
+    
     def get(self, request, format=None):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
-    # def post(self, request, format=None):
-    #    serializer = TaskSerializer(data=request.data)
-    #    if serializer.is_valid():
-    #        serializer.save()
-    #        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, pk, format=None):
+        milestone = get_object_or_404(Milestone, pk=pk)
+        serializer = TaskSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(milestone=milestone)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TaskDetail(APIView):
-    def __get_unique_milestone_id__(self, milestone):
-        last = milestone.task_set.last()
-        if last:
-            return last.query_id + 1
-        return 1
-
     def get(self, request, pk, mk, tk, format=None):
         project = get_object_or_404(Project, pk=pk)
         task = get_object_or_404(
