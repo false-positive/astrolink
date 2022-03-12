@@ -18,6 +18,8 @@ class Rev(models.Model):
     file = models.FileField(upload_to=get_rev_directory, blank=True)
     extension = models.CharField(max_length=10)
     revision = models.IntegerField(editable=False)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
+    date_changed = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.parent.name + ', revision: ' + str(self.revision)
@@ -29,6 +31,8 @@ class File(models.Model):
     file = models.FileField(upload_to=get_project_directory, blank=True)
     extension = models.CharField(max_length=10)
     query_id = models.IntegerField(editable=False)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
+    date_changed = models.DateTimeField(auto_now=True, null=True)
     
 
     def __str__(self):
