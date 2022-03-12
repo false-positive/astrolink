@@ -1,7 +1,20 @@
 import makeRequest from './request';
+import { fromApiTeam, toApiTeam } from './team';
 
-const fromApiProject = ({ uuid, ...rest }) => ({ id: uuid, ...rest });
-const toApiProject = ({ id, ...rest }) => ({ uuid: id, ...rest });
+// eslint-disable-next-line camelcase
+const fromApiProject = ({ uuid, team, file_set, ...rest }) => ({
+  id: uuid,
+  // eslint-disable-next-line camelcase
+  files: file_set,
+  team: fromApiTeam(team),
+  ...rest,
+});
+const toApiProject = ({ id, team, files, ...rest }) => ({
+  uuid: id,
+  file_set: files,
+  team: toApiTeam(team),
+  ...rest,
+});
 
 export const getProject = async (projectId) => {
   const response = await makeRequest(`/projects/${projectId}`);
