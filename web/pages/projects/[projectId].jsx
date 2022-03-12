@@ -1,9 +1,8 @@
 import { Title, Text, Center, Container, Button } from '@mantine/core';
-import Page from '../components/Page';
-import UserSidebar from '../components/UserSidebar';
-import FileSidebar from '../components/FileSidebar';
-import ProgressCard from '../components/ProgressCard';
-import MilestoneAccordion from '../components/MilestoneAccordion';
+import Page from '../../components/Page';
+import UserSidebar from '../../components/UserSidebar';
+import FileSidebar from '../../components/FileSidebar';
+import MilestoneAccordion from '../../components/MilestoneAccordion';
 
 export default function Home({ project, users, files, projects }) {
   return (
