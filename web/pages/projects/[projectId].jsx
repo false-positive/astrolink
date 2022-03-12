@@ -5,7 +5,6 @@ import {
   Container,
   Button,
   Modal,
-  Group,
   TextInput,
   Textarea,
   Input,
@@ -13,12 +12,12 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import Page from '../components/Page';
-import UserSidebar from '../components/UserSidebar';
-import FileSidebar from '../components/FileSidebar';
-import MilestoneAccordion from '../components/MilestoneAccordion';
+import Page from '../../components/Page';
+import UserSidebar from '../../components/UserSidebar';
+import FileSidebar from '../../components/FileSidebar';
+import MilestoneAccordion from '../../components/MilestoneAccordion';
 
-export default function Home({ project, users, files, projects }) {
+export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
   const { register, handleSubmit } = useForm();
 

@@ -30,7 +30,6 @@ export const getServerSideProps = async ({ params }) => {
   const { teamId } = params;
   try {
     const team = await getTeam(teamId);
-    console.log(team);
     return {
       props: {
         team,
