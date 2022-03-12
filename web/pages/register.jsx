@@ -11,11 +11,18 @@ import {
 import Link from 'next/link';
 import { MdOutlineAlternateEmail } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import { register as registerAccount } from '../api/user';
 
 const Register = () => {
-  const onSubmit = (data) => {
-    registerAccount(data);
+  const router = useRouter();
+
+  const onSubmit = async (data) => {
+    if ((await registerAccount(data)) === true) {
+      router.push('/');
+    } else {
+      alert('Registration failed');
+    }
   };
 
   const { register, handleSubmit } = useForm();

@@ -1,6 +1,5 @@
+import Cookies from 'js-cookie';
 import makeRequest from './request';
-
-//
 
 const toApiUser = ({ firstName, lastName, ...rest }) => ({
   ...rest,
@@ -19,14 +18,16 @@ export const login = async (data) => {
   });
 
   if (response.ok) {
-    console.log(`SUCCESSFULLY LOGGED IN!!! `);
-    console.log(await response.json());
-
-    // return fromApiTeam(team);
-  } else {
-    const errors = await response.json();
-    throw errors;
+    const { token } = await response.json();
+    Cookies.set('token', token, { expires: 7, sameSite: 'strict' });
+    console.log(response.status);
+    if (response.status >= 200 && response.status < 300) return true;
+    return false;
   }
+
+  const errors = await response.json();
+  return false;
+  // throw errors;
 };
 
 export const register = async (data) => {
@@ -36,13 +37,9 @@ export const register = async (data) => {
   });
 
   if (response.ok) {
-    console.log('registery successful');
-    login({ email: data.email, password: data.password });
-    // console.log(await response.json());
-    // apiTeam = await response.json();
-    // return fromApiTeam(team);
-  } else {
-    const errors = await response.json();
-    throw errors;
+    return login({ email: data.email, password: data.password });
   }
+  const errors = await response.json();
+  return false;
+  // throw errors;
 };
