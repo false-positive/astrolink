@@ -1,22 +1,20 @@
 import makeRequest, { makeNonJsonRequest } from './request';
 
 // eslint-disable-next-line camelcase
-export const fromApiFiles = ({ pk, query_id, ...rest }) => ({
-  id: pk,
+export const fromApiFiles = ({ query_id, ...rest }) => ({
   // eslint-disable-next-line camelcase
-  queryId: query_id,
+  id: query_id,
   ...rest,
 });
-export const toApiFiles = ({ queryId, ...rest }) => ({
-  pk: rest.id,
-  query_id: queryId,
+export const toApiFiles = ({ id, ...rest }) => ({
+  query_id: id,
   ...rest,
 });
 
 export const getFiles = async (projectId) => {
   const response = await makeRequest(`/projects/${projectId}/files`);
   const apiFiles = await response.json();
-  return apiFiles.map((rest) => ({ ...rest, id: rest.pk }));
+  return apiFiles.map(fromApiFiles);
 };
 
 export const uploadFile = (projectId, file) => {
@@ -24,7 +22,7 @@ export const uploadFile = (projectId, file) => {
   formdata.append('name', file.name);
   formdata.append('project', projectId);
   formdata.append('file', file, file.name);
-  formdata.append('mimetype', file.type);
+  formdata.append('mimetype', file.type || 'application/octet-stream');
 
   return makeNonJsonRequest(`/projects/${projectId}/files`, {
     method: 'POST',
