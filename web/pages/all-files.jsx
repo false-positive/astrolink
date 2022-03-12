@@ -13,6 +13,8 @@ import { useNotifications } from '@mantine/notifications';
 import Page from '../components/Page';
 import FileList from '../components/FileList';
 
+import { getFiles } from '../api/file';
+
 export const dropzoneChildren = (status) => (
   <Group
     position="center"
@@ -48,7 +50,10 @@ const AllFiles = ({ files }) => {
             uploadedFiles.forEach(async (file) => {
               const formdata = new FormData();
               formdata.append('name', file.name);
-              formdata.append('project', '1');
+              formdata.append(
+                'project',
+                '932603d2-2d5f-45a0-b05e-9f5fa607f500'
+              );
               formdata.append('file', file, file.name);
 
               const requestOptions = {
@@ -85,46 +90,11 @@ const AllFiles = ({ files }) => {
 
 export default AllFiles;
 
-export const getStaticProps = () => {
+export const getServerSideProps = async () => {
+  // TODO add project id
   return {
     props: {
-      files: [
-        {
-          id: 0,
-          name: 'File 1',
-          lastModified: '2020-01-01',
-        },
-        {
-          id: 1,
-          name: 'File 2',
-          lastModified: '2020-01-02',
-        },
-        {
-          id: 2,
-          name: 'File 3',
-          lastModified: '2020-01-03',
-        },
-        {
-          id: 3,
-          name: 'File 4',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 4,
-          name: 'File 5',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 5,
-          name: 'File 6',
-          lastModified: '2020-01-04',
-        },
-        {
-          id: 6,
-          name: 'File 7',
-          lastModified: '2020-01-04',
-        },
-      ],
+      files: await getFiles(1),
     },
   };
 };

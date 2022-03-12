@@ -14,6 +14,7 @@ class TeamList(APIView):
         serializer = TeamSerializer(teams, many=True)
         return Response(serializer.data)
 
+
     def post(self, request, format=None):
         serializer = TeamSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,7 +28,8 @@ class TeamDetail(APIView):
         team = get_object_or_404(Team, pk=pk)
         serializer = TeamSerializer(team)
         return Response(serializer.data)
-    
+
+
     def patch(self, request, pk, format=None):
         team = get_object_or_404(Team, pk=pk)
         serializer = TeamSerializer(team, request.data, partial=True)
@@ -36,12 +38,19 @@ class TeamDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    
+    def delete(self, request, pk, format=None):
+        team = self.get_object(pk)
+        team.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class ProjectList(APIView):
     def get(self, request, format=None):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
+
 
     def post(self, request, format=None):
         team_id = request.data['team']
@@ -59,7 +68,8 @@ class ProjectDetail(APIView):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
-    
+
+
     def patch(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         serializer = ProjectSerializer(project, request.data, partial=True)
@@ -67,6 +77,12 @@ class ProjectDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def delete(self, request, pk, format=None):
+        project = self.get_object(pk)
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MilestoneList(APIView):
@@ -76,11 +92,13 @@ class MilestoneList(APIView):
             return last.query_id + 1
         return 1
 
+
     def get(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         milestones = project.milestone_set.all()
         serializer = MilestoneSerializer(milestones, many=True)
         return Response(serializer.data)
+
 
     def post(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
@@ -98,6 +116,7 @@ class MilestoneDetail(APIView):
         serializer = MilestoneSerializer(milestone)
         return Response(serializer.data)
 
+
     def patch(self, request, pk, mk, format=None):
         project = get_object_or_404(Project, pk=pk)
         milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
@@ -106,6 +125,15 @@ class MilestoneDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk, mk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestone = project.milestone_set.filter(query_id=mk)
+        milestone.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 class TaskList(APIView):
@@ -123,19 +151,35 @@ class TaskList(APIView):
 
 
 class TaskDetail(APIView):
-    def get(self, request, pk, format=None):
-        task = get_object_or_404(Task, pk=pk)
+    def __get_unique_milestone_id__(self, milestone):
+        last = milestone.task_set.last()
+        if last:
+            return last.query_id + 1
+        return 1
+
+
+    def get(self, request, pk, mk, tk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
         serializer = TaskSerializer(task)
         return Response(serializer.data)
 
-    def patch(self, request, pk, format=None):
-        tasks = get_object_or_404(Task, pk=pk)
-        serializer = TaskSerializer(tasks, request.data, partial=True)
+
+    def patch(self, request, pk, mk, tk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
+        serializer = TaskSerializer(task, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+    def delete(self, request, pk, mk, tk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        task = get_object_or_404(project.milestone_set.filter(query_id=mk), query_id=tk)
+        task.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UserList(APIView):
     def get(self, request, format=None):
@@ -143,6 +187,7 @@ class UserList(APIView):
         print(users)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
     def post(self, request, format=None):
         user = User.objects.create_user(request.data['first_name'], request.data['last_name'], request.data['email'], request.data['password'])
