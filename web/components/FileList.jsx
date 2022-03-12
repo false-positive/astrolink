@@ -22,7 +22,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const FileList = ({ files }) => {
+const FileList = ({ files, lastModified = true }) => {
   const getDateWords = (date) => {
     const month = date.toLocaleString('default', { month: 'long' });
     const day = date.getDate();
@@ -42,7 +42,8 @@ const FileList = ({ files }) => {
               </Box>
               {file.name}
             </div>
-            Last Modified {getDateWords(new Date(file.lastModified))}
+            {lastModified &&
+              `Last Modified ${getDateWords(new Date(file.lastModified))}`}
           </Group>
         </Box>
       ))}

@@ -1,5 +1,5 @@
 import { Center, Title } from '@mantine/core';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 const ProjectProgress = ({ milestones }) => {
   // NOTE: only reason this should re-render is because milestone changes, so there is no need to useMemo

@@ -1,6 +1,8 @@
 import { Box, Card, Group, Text, Title } from '@mantine/core';
+import FileCard from './FileCard';
 import ProgressCard from './ProgressCard';
 import UsersRow from './UsersRow';
+import FileList from './FileList';
 
 const ProjectCard = ({ project }) => {
   return (
@@ -19,7 +21,15 @@ const ProjectCard = ({ project }) => {
       <Card.Section px="md" pb="xl">
         <Group position="apart" spacing="xs">
           <ProgressCard milestones={project.milestones} />
-          <Box>files</Box>
+          <Group position="apart" spacing="xs" sx={{ width: '100%', flex: 1 }}>
+            <FileCard />
+            <Box sx={{ width: '100%', flex: 1 }}>
+              <FileList
+                files={project.files.slice(1, 5)}
+                lastModified={false}
+              />
+            </Box>
+          </Group>
         </Group>
       </Card.Section>
     </Card>
