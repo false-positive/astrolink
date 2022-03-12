@@ -22,7 +22,7 @@ class FileList(APIView):
     def __get_file_id__(self, project):
         last = project.file_set.last()
         if last:
-            return last.revision + 1
+            return last.query_id + 1
         return 1
 
     def get(self, request, pk, format=None):
@@ -30,7 +30,7 @@ class FileList(APIView):
         files = project.file_set.all()
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
     def post(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
