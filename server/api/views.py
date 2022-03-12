@@ -133,13 +133,16 @@ class TaskList(APIView):
             return last.query_id + 1
         return 1
 
-    def get(self, request, format=None):
-        tasks = Task.objects.all()
+    def get(self, request, pk, mk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
+        tasks = milestone.task_set.all()
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
-    def post(self, request, pk, format=None):
-        milestone = get_object_or_404(Milestone, pk=pk)
+    def post(self, request, pk, mk, format=None):
+        project = get_object_or_404(Project, pk=pk)
+        milestone = get_object_or_404(project.milestone_set.all(), query_id=mk)
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(milestone=milestone)
