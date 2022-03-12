@@ -4,7 +4,7 @@ import UserSidebar from '../../components/UserSidebar';
 import FileSidebar from '../../components/FileSidebar';
 import MilestoneAccordion from '../../components/MilestoneAccordion';
 
-export default function Home({ project, users, files, projects }) {
+export default function Home({ project, users, files }) {
   return (
     <Page>
       <UserSidebar users={users} />
@@ -13,7 +13,7 @@ export default function Home({ project, users, files, projects }) {
       <Center>
         <Container size="md">
           <Center style={{ margin: '5rem 0 2rem 0' }}>
-            <Title order={1}>{project.title}</Title>
+            <Title order={1}>{project.name}</Title>
           </Center>
           <Text size="lg" mb="5rem">
             {project.description}
@@ -26,7 +26,7 @@ export default function Home({ project, users, files, projects }) {
           <MilestoneAccordion
             // state={accordionState}
             // onChange={accordionHandlers.setState}
-            milestones={projects[0].milestones}
+            milestones={project.milestones}
           />
 
           {/* <ProgressCard milestones={projects[0].milestones} /> */}
@@ -36,199 +36,9 @@ export default function Home({ project, users, files, projects }) {
   );
 }
 
-export const getStaticProps = () => {
+export const getServerSideProps = () => {
   return {
     props: {
-      projects: [
-        {
-          id: 0,
-          name: 'Project 1',
-          description: 'This is Project 1',
-          milestones: [
-            {
-              id: 0,
-              name: 'Milestone 1',
-              description: 'Milestone 1 description',
-              tasks: [
-                {
-                  id: 0,
-                  name: 'Task 1',
-                  description: 'Task 1 description',
-                  completed: true,
-                },
-                {
-                  id: 1,
-                  name: 'Task 2',
-                  description: 'Task 2 description',
-                  completed: false,
-                },
-                {
-                  id: 2,
-                  name: 'Task 3',
-                  description: 'Task 3 description',
-                  completed: true,
-                },
-              ],
-            },
-            {
-              id: 1,
-              name: 'Milestone 2',
-              description: 'Milestone 2 description',
-              tasks: [
-                {
-                  id: 0,
-                  name: 'Task 1',
-                  description: 'Task 1 description',
-                  completed: false,
-                },
-                {
-                  id: 1,
-                  name: 'Task 2',
-                  description: 'Task 2 description',
-                  completed: false,
-                },
-                {
-                  id: 2,
-                  name: 'Task 3',
-                  description: 'Task 3 description',
-                  completed: false,
-                },
-              ],
-            },
-          ],
-          files: [
-            {
-              id: 0,
-              name: 'File 1',
-              lastModified: '2020-01-01',
-            },
-            {
-              id: 1,
-              name: 'File 2',
-              lastModified: '2020-01-02',
-            },
-            {
-              id: 2,
-              name: 'File 3',
-              lastModified: '2020-01-03',
-            },
-            {
-              id: 3,
-              name: 'File 4',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 5',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 6',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 7',
-              lastModified: '2020-01-04',
-            },
-          ],
-        },
-        {
-          id: 1,
-          name: 'Project 2',
-          description: 'This is Project 2',
-          milestones: [
-            {
-              id: 0,
-              name: 'Milestone 1',
-              description: 'Milestone 1 description',
-              tasks: [
-                {
-                  id: 0,
-                  name: 'Task 1',
-                  description: 'Task 1 description',
-                  completed: false,
-                },
-                {
-                  id: 1,
-                  name: 'Task 2',
-                  description: 'Task 2 description',
-                  completed: false,
-                },
-                {
-                  id: 2,
-                  name: 'Task 3',
-                  description: 'Task 3 description',
-                  completed: false,
-                },
-              ],
-            },
-            {
-              id: 1,
-              name: 'Milestone 2',
-              description: 'Milestone 2 description',
-              tasks: [
-                {
-                  id: 0,
-                  name: 'Task 1',
-                  description: 'Task 1 description',
-                  completed: false,
-                },
-                {
-                  id: 1,
-                  name: 'Task 2',
-                  description: 'Task 2 description',
-                  completed: false,
-                },
-                {
-                  id: 2,
-                  name: 'Task 3',
-                  description: 'Task 3 description',
-                  completed: false,
-                },
-              ],
-            },
-          ],
-          files: [
-            {
-              id: 0,
-              name: 'File 1',
-              lastModified: '2020-01-01',
-            },
-            {
-              id: 1,
-              name: 'File 2',
-              lastModified: '2020-01-02',
-            },
-            {
-              id: 2,
-              name: 'File 3',
-              lastModified: '2020-01-03',
-            },
-            {
-              id: 3,
-              name: 'File 4',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 5',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 6',
-              lastModified: '2020-01-04',
-            },
-            {
-              id: 3,
-              name: 'File 7',
-              lastModified: '2020-01-04',
-            },
-          ],
-        },
-      ],
       users: [
         {
           id: 0,
@@ -270,9 +80,60 @@ export const getStaticProps = () => {
       ],
       project: {
         id: 0,
-        title: 'Test Project',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis expedita officiis facilis amet ipsa eum nisi at exercitationem in, voluptatum dolores corrupti, quidem rerum illum fugit perspiciatis corporis dolorum ea!Lorem, Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed in doloremque, tempore repudiandae itaque odio iusto illo nobis voluptatem reprehenderit voluptates ipsum et unde alias eligendi labore blanditiis beatae magnam.',
+        name: 'Project 1',
+        description: 'This is Project 1',
+        milestones: [
+          {
+            id: 0,
+            name: 'Milestone 1',
+            description: 'Milestone 1 description',
+            tasks: [
+              {
+                id: 0,
+                name: 'Task 1',
+                description: 'Task 1 description',
+                completed: true,
+              },
+              {
+                id: 1,
+                name: 'Task 2',
+                description: 'Task 2 description',
+                completed: false,
+              },
+              {
+                id: 2,
+                name: 'Task 3',
+                description: 'Task 3 description',
+                completed: true,
+              },
+            ],
+          },
+          {
+            id: 1,
+            name: 'Milestone 2',
+            description: 'Milestone 2 description',
+            tasks: [
+              {
+                id: 0,
+                name: 'Task 1',
+                description: 'Task 1 description',
+                completed: false,
+              },
+              {
+                id: 1,
+                name: 'Task 2',
+                description: 'Task 2 description',
+                completed: false,
+              },
+              {
+                id: 2,
+                name: 'Task 3',
+                description: 'Task 3 description',
+                completed: false,
+              },
+            ],
+          },
+        ],
       },
     },
   };
