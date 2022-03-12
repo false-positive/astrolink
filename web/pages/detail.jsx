@@ -1,11 +1,35 @@
-import { Title, Text, Center, Container, Button } from '@mantine/core';
+import {
+  Title,
+  Text,
+  Center,
+  Container,
+  Button,
+  Modal,
+  Group,
+  TextInput,
+  Textarea,
+  Input,
+} from '@mantine/core';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import Page from '../components/Page';
 import UserSidebar from '../components/UserSidebar';
 import FileSidebar from '../components/FileSidebar';
-import ProgressCard from '../components/ProgressCard';
 import MilestoneAccordion from '../components/MilestoneAccordion';
 
 export default function Home({ project, users, files, projects }) {
+  const [opened, setOpened] = useState(false);
+  const { register, handleSubmit } = useForm();
+
+  const router = useRouter();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    setOpened(false);
+    router.push(router.asPath, null, { scroll: false });
+  };
+
   return (
     <Page>
       <UserSidebar users={users} />
@@ -20,9 +44,43 @@ export default function Home({ project, users, files, projects }) {
             {project.description}
           </Text>
 
-          <Button size="md" mb="2rem">
+          <Button size="md" mb="2rem" onClick={() => setOpened(true)}>
             Create New Milestone
           </Button>
+
+          <Modal
+            size="md"
+            centered
+            opened={opened}
+            onClose={() => setOpened(false)}
+            title="Create New Milestone"
+          >
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <TextInput
+                {...register('title')}
+                name="title"
+                label="Title"
+                placeholder="Title"
+                size="md"
+                mb="1rem"
+                required
+              />
+              <Textarea
+                {...register('desciprtion')}
+                name="desciprtion"
+                placeholder="Milestone Description"
+                label="Milestone Description"
+                size="md"
+                mb="4rem"
+                required
+              />
+              <Center sx={{ height: '10px' }}>
+                <Input component="button" size="lg" mb="2rem">
+                  Create Milestone
+                </Input>
+              </Center>
+            </form>
+          </Modal>
 
           <MilestoneAccordion
             // state={accordionState}
