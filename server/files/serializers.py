@@ -8,7 +8,7 @@ class RevSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rev
-        fields = ['name', 'parent', 'file', 'extension', 'revision']
+        fields = ['name', 'parent', 'file', 'mimetype', 'revision']
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -17,5 +17,5 @@ class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = File
-        fields = ['pk', 'project', 'name', 'extension',
+        fields = ['pk', 'project', 'name', 'mimetype',
                   'file', 'revisions', 'query_id']
