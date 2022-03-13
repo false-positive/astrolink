@@ -61,19 +61,16 @@ class FileList(APIView):
                     serializer.save(query_id=self.__get_file_id__(project))
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< HEAD
+                serializer.save(revision=self.__get_revision__(rev_file))
+                FILE.close()
+                rev_file.file.delete()
+                serializer = FileSerializer(rev_file, data=request.data)
+                if serializer.is_valid():
+                    serializer.save(query_id=self.__get_file_id__(project))
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             tmp_file_ptr.delete()
             return Response({"result": "file already exists and its contents are the same"}, status=status.HTTP_400_BAD_REQUEST)
-=======
-            serializer.save(revision=self.__get_revision__(rev_file))
-            FILE.close()
-            rev_file.file.delete()
-            serializer = FileSerializer(rev_file, data=request.data)
-            if serializer.is_valid():
-                serializer.save(query_id=self.__get_file_id__(project))
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
->>>>>>> 302ac92eb097925b7927215a0d082242acc0cdc8
         else:
             serializer = FileSerializer(data=request.data)
             if serializer.is_valid():
