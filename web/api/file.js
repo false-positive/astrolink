@@ -35,9 +35,9 @@ export const getFile = async (projectId, fileId) => {
   throw errors;
 };
 
-export const uploadFile = (projectId, file) => {
+export const uploadFile = (projectId, file, filename) => {
   const formdata = new FormData();
-  formdata.append('name', file.name);
+  formdata.append('name', filename || file.name);
   formdata.append('project', projectId);
   formdata.append('file', file, file.name);
   formdata.append('mimetype', file.type || 'application/octet-stream');
@@ -52,5 +52,15 @@ export const deleteFile = async (projectId, fileId) => {
   const response = makeRequest(`/projects/${projectId}/files/${fileId}`, {
     method: 'DELETE',
   });
+  return response.status === 204;
+};
+
+export const deleteRevision = async (projectId, fileId, revisionId) => {
+  const response = makeRequest(
+    `/projects/${projectId}/files/${fileId}/revisions/${revisionId}`,
+    {
+      method: 'DELETE',
+    }
+  );
   return response.status === 204;
 };
