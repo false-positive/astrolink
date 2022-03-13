@@ -1,4 +1,12 @@
-import { Box, Card, Group, Text, Title, UnstyledButton } from '@mantine/core';
+import {
+  Box,
+  Card,
+  Group,
+  Text,
+  Title,
+  TypographyStylesProvider,
+  UnstyledButton,
+} from '@mantine/core';
 import Link from 'next/link';
 import FileCard from './FileCard';
 import ProgressCard from './ProgressCard';
@@ -9,7 +17,7 @@ import StyledLink from './StyledLink';
 
 const ProjectCard = ({ project }) => {
   return (
-    <Card shadow="sm" sx={{ width: '100%' }}>
+    <Card shadow="sm" style={{ width: '100%' }}>
       <Card.Section p="lg">
         <Group position="apart" grow>
           <Box>
@@ -21,11 +29,10 @@ const ProjectCard = ({ project }) => {
               <Title>{project.name}</Title>
             </UnstyledButton>
             <Text>{project.description}</Text>
-            <UsersRow
-              users={Array.from({ length: 26 }, (_, i) =>
-                String.fromCharCode(i + 65)
-              )}
-            />
+            <TypographyStylesProvider>
+              <div dangerouslySetInnerHTML={{ __html: project.description }} />
+            </TypographyStylesProvider>
+            <UsersRow users={project.team.members} />
           </Box>
           <Box sx={{ width: '100%' }}>
             <MilestoneAccordion milestones={project.milestones} />

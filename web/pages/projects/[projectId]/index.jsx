@@ -8,6 +8,7 @@ import {
   TextInput,
   Textarea,
   Input,
+  TypographyStylesProvider,
 } from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -44,9 +45,11 @@ export default function Home({ project, users, files }) {
           <Center style={{ margin: '5rem 0 2rem 0' }}>
             <Title order={1}>{project.name}</Title>
           </Center>
-          <Text size="lg" mb="5rem">
-            {project.description}
-          </Text>
+          <TypographyStylesProvider size="lg" mb="5rem">
+            <div
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            ></div>
+          </TypographyStylesProvider>
 
           <Button size="md" mb="2rem" onClick={() => setOpened(true)}>
             Create New Milestone
@@ -73,7 +76,7 @@ export default function Home({ project, users, files }) {
                 {...register('description')}
                 name="description"
                 placeholder="Description"
-                label="Description"
+                label="Milestone Description"
                 size="md"
                 mb="4rem"
                 required

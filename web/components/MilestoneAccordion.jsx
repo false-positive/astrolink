@@ -1,4 +1,4 @@
-import { Accordion, Text } from '@mantine/core';
+import { Accordion, Text, TypographyStylesProvider } from '@mantine/core';
 import TasksTimeline from './TasksTimeline';
 
 const AccordionLabel = ({ label, description }) => (

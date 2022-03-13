@@ -1,4 +1,9 @@
+from ctypes import sizeof
+import os
 import filecmp
+import shutil
+import gzip
+
 
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
@@ -52,8 +57,16 @@ class FileList(APIView):
             
             if not filecmp.cmp(tmp_path, rev_file.file.path, shallow=True):
                 tmp_file_ptr.delete()
-                f_tmp = open(rev_file.file.path, 'rb')
-                FILE = FileObject(f_tmp)
+
+                f_tmp =  open(rev_file.file.path, 'rb')
+                raw_name = rev_file.name.replace(rev_file.name.split('.', 10)[-1], '')
+                zipped_file = gzip.open(raw_name + 'gz', 'wb', compresslevel=5)
+                shutil.copyfileobj(f_tmp, zipped_file)
+                f_tmp.close()
+                zipped_file.close()
+                zipped_file = open(raw_name + 'gz', 'rb')
+
+                FILE = FileObject(zipped_file)
                 serializer = RevSerializer(data={'name': rev_file.name, 'parent': rev_file.pk, 'file': FILE, 'mimetype': rev_file.mimetype})
                 
                 if not serializer.is_valid():
@@ -61,6 +74,8 @@ class FileList(APIView):
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
                 serializer.save(revision=self.__get_revision__(rev_file))
+                os.remove(raw_name + 'gz')
+                zipped_file.close()
                 FILE.close()
                 rev_file.file.delete()
                 serializer = FileSerializer(rev_file, data=request.data)
@@ -134,7 +149,13 @@ class RevDownload(APIView):
         project = get_object_or_404(Project, pk=pk)
         file = get_object_or_404(project.file_set.all(), query_id=fk)
         rev = file.rev_set.filter(revision=rk)[0]
-        return FileResponse(rev.file, as_attachment=True)
+        ret_file_ptr = open('files/media/temp/' + rev.name, 'wb+')
+        ret_data_ptr = gzip.open(rev.file.path, 'rb+', compresslevel=5)
+        shutil.copyfileobj(ret_data_ptr, ret_file_ptr)
+        ret_data_ptr.close()
+        ret_file_ptr.seek(0)
+        FILE = FileObject(ret_file_ptr)
+        return FileResponse(FILE,  as_attachment=True)
 
 
 

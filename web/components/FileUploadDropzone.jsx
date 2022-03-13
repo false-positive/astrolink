@@ -54,6 +54,7 @@ const FileUploadDropzone = ({ filename }) => {
         });
       }}
       mb={50}
+      multiple={false}
       // onReject={(uploadedFiles) =>
       //   console.log('rejected files', uploadedFiles)
       // }
