@@ -21,11 +21,7 @@ const ProjectCard = ({ project }) => {
               <Title>{project.name}</Title>
             </UnstyledButton>
             <Text>{project.description}</Text>
-            <UsersRow
-              users={Array.from({ length: 26 }, (_, i) =>
-                String.fromCharCode(i + 65)
-              )}
-            />
+            <UsersRow users={project.team.members} />
           </Box>
           <Box sx={{ width: '100%' }}>
             <MilestoneAccordion milestones={project.milestones} />
