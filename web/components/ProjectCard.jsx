@@ -28,8 +28,7 @@ const ProjectCard = ({ project }) => {
             >
               <Title>{project.name}</Title>
             </UnstyledButton>
-            <Text>{project.description}</Text>
-            <TypographyStylesProvider>
+            <TypographyStylesProvider pb="1rem">
               <div dangerouslySetInnerHTML={{ __html: project.description }} />
             </TypographyStylesProvider>
             <UsersRow users={project.team.members} />
