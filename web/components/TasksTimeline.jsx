@@ -1,5 +1,6 @@
 import { Text, Timeline } from '@mantine/core';
 import { useMemo } from 'react';
+import { Rocket } from 'tabler-icons-react';
 
 const TasksTimeline = ({ tasks }) => {
   const active = useMemo(
@@ -11,7 +12,7 @@ const TasksTimeline = ({ tasks }) => {
       {tasks.map((task, id) => (
         <Timeline.Item
           key={id}
-          // bullet={task.completed && <span />}
+          bullet={task.completed && <Rocket />}
           title={task.name}
         >
           <Text color="dimmed" size="sm">
