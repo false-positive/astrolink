@@ -23,6 +23,12 @@ export const getProject = async (projectId) => {
   return fromApiProject(apiProject);
 };
 
-export const setProject = async (project) => {
-  toApiProject(project);
+export const setProject = async (teamId, project) => {
+  const response = await makeRequest(`/projects`, {
+    method: 'POST',
+    body: JSON.stringify({
+      ...project,
+      team: teamId,
+    }),
+  });
 };
