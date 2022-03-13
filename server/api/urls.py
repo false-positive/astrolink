@@ -26,4 +26,5 @@ urlpatterns = [
     path('files/', include('files.urls'), name='files'),
 
     path('users/login/', obtain_auth_token, name='login'),
+    path('users/me/', views.UserAuthToken.as_view(), name='get_token'),
 ]
