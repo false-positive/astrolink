@@ -1,4 +1,3 @@
-from ctypes import sizeof
 import os
 import filecmp
 import shutil
