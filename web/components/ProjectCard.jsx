@@ -2,16 +2,11 @@ import {
   Box,
   Card,
   Group,
-  Text,
   Title,
   TypographyStylesProvider,
   UnstyledButton,
 } from '@mantine/core';
-import Link from 'next/link';
-import FileCard from './FileCard';
-import ProgressCard from './ProgressCard';
 import UsersRow from './UsersRow';
-import FileList from './FileList';
 import MilestoneAccordion from './MilestoneAccordion';
 import StyledLink from './StyledLink';
 

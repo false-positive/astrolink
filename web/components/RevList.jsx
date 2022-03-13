@@ -1,9 +1,7 @@
-import { Box, createStyles, Group, Text, UnstyledButton } from '@mantine/core';
+import { Box, createStyles, Group, Text } from '@mantine/core';
 import { AiFillFileText } from 'react-icons/ai';
 import getDateWords from '../lib/utils/getDateWords';
-import FileMenu from './FileMenu';
 import RevisionMenu from './RevisionMenu';
-import StyledLink from './StyledLink';
 
 const useStyles = createStyles((theme, _params, _getRef) => {
   const fileboxColor =

@@ -1,5 +1,5 @@
 import { fromApiTeamShallow, toApiTeamShallow } from './converters/team';
-import { fromApiFiles, toApiFiles } from './file';
+import { fromApiFiles } from './file';
 import makeRequest from './request';
 
 // eslint-disable-next-line camelcase
@@ -30,7 +30,7 @@ export const getProject = async (projectId) => {
 };
 
 export const setProject = async (teamId, project) => {
-  const response = await makeRequest(`/projects`, {
+  await makeRequest(`/projects`, {
     method: 'POST',
     body: JSON.stringify({
       ...project,

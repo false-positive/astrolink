@@ -1,18 +1,8 @@
-import { Accordion, Card, Group, Text, useAccordionState } from '@mantine/core';
+import { Card, Group, useAccordionState } from '@mantine/core';
 import { useMemo } from 'react';
 import MilestoneAccordion from './MilestoneAccordion';
 import MilestoneProgress from './MilestoneProgress';
 import ProjectProgress from './ProjectProgress';
-import TasksTimeline from './TasksTimeline';
-
-const AccordionLabel = ({ label, description }) => (
-  <div>
-    <Text>{label}</Text>
-    <Text size="sm" color="dimmed" weight={400}>
-      {description}
-    </Text>
-  </div>
-);
 
 const ProgressCard = ({ milestones }) => {
   const [accordionState, accordionHandlers] = useAccordionState({});

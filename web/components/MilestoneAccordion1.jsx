@@ -34,8 +34,6 @@ const MilestoneAccordion1 = ({ state, onChange, milestones }) => {
   const onSubmit = async (data) => {
     await setTasks(router.query.projectId, curMilestone, data);
 
-    console.log('yes');
-
     setOpened(false);
     setCurMilestone(null);
     router.push(router.asPath, null, { scroll: false });

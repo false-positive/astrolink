@@ -2,7 +2,7 @@ import { Divider, Menu, Modal } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Download, Trash } from 'tabler-icons-react';
-import { deleteFile, deleteRevision } from '../api/file';
+import { deleteRevision } from '../api/file';
 import FileUploadDropzone from './FileUploadDropzone';
 
 const RevisionMenu = ({ revision, project, file }) => {
