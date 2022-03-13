@@ -14,6 +14,7 @@ import FileMenu from '../../../../components/FileMenu';
 import Page from '../../../../components/Page';
 
 const FileDetailPage = ({ file }) => {
+  const downloadUrl = `${process.env.NEXT_PUBLIC_API_URL}/projects/${file.project}/files/${file.id}/download`;
   return (
     <Page>
       <Center>
@@ -34,7 +35,9 @@ const FileDetailPage = ({ file }) => {
           </Center>
 
           <Group position="right">
-            <Button leftIcon={<Download />}>Download</Button>
+            <Button component="a" href={downloadUrl} leftIcon={<Download />}>
+              Download
+            </Button>
             <Button variant="outline" leftIcon={<Upload />}>
               Upload new revision
             </Button>
