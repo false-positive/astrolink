@@ -145,6 +145,8 @@ class RevDetail(APIView):
 
 class RevDownload(APIView):
     def get(self, request, pk, fk, rk, format=None):
+        shutil.rmtree('./files/media/temp')
+        os.mkdir('./files/media/temp')
         project = get_object_or_404(Project, pk=pk)
         file = get_object_or_404(project.file_set.all(), query_id=fk)
         rev = file.rev_set.filter(revision=rk)[0]
