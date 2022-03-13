@@ -12,6 +12,7 @@ import { getFile } from '../../../../api/file';
 import FileList from '../../../../components/FileList';
 import FileMenu from '../../../../components/FileMenu';
 import Page from '../../../../components/Page';
+import getDateWords from '../../../../lib/utils/getDateWords';
 
 const FileDetailPage = ({ file }) => {
   const downloadUrl = `${process.env.NEXT_PUBLIC_API_URL}/projects/${file.project}/files/${file.id}/download`;
@@ -42,6 +43,15 @@ const FileDetailPage = ({ file }) => {
               Upload new revision
             </Button>
           </Group>
+
+          <Box px={10}>
+            <Text color="dimmed" size="lg">
+              Uploaded At {getDateWords(new Date(file.lastModified))}
+            </Text>
+            <Text color="dimmed" size="lg">
+              Last Modified {getDateWords(new Date(file.lastModified))}
+            </Text>
+          </Box>
 
           <Box pt={52}>
             <Title order={2} pb={15}>

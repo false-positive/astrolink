@@ -1,5 +1,4 @@
 import { Divider, Menu } from '@mantine/core';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Download, Files, Trash, Upload } from 'tabler-icons-react';
 import { deleteFile } from '../api/file';
