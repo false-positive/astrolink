@@ -47,7 +47,7 @@ class FileList(APIView):
             rev_file.file.delete()
             serializer = FileSerializer(rev_file, data=request.data)
             if serializer.is_valid():
-                serializer.save(date_added=rev_file.date_added, date_changed=rev_file.date_changed)
+                serializer.save(query_id=self.__get_file_id__(project))
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
