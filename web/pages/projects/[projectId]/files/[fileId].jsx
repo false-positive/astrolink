@@ -11,12 +11,12 @@ import {
 import { useState } from 'react';
 import { Download, Upload } from 'tabler-icons-react';
 import { getFile } from '../../../../api/file';
-import FileList from '../../../../components/FileList';
 import FileMenu from '../../../../components/FileMenu';
 import FileUploadDropzone from '../../../../components/FileUploadDropzone';
 import Page from '../../../../components/Page';
 import RevList from '../../../../components/RevList';
 import getDateWords from '../../../../lib/utils/getDateWords';
+import withAuth from '../../../../lib/withAuth';
 
 const FileDetailPage = ({ file }) => {
   const [openedRevise, setOpenedRevise] = useState(false);
@@ -90,7 +90,7 @@ const FileDetailPage = ({ file }) => {
 
 export default FileDetailPage;
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = withAuth(async ({ params }) => {
   try {
     const { projectId, fileId } = params;
     const file = await getFile(projectId, fileId);
@@ -104,4 +104,4 @@ export const getServerSideProps = async ({ params }) => {
       notFound: true,
     };
   }
-};
+});

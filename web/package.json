@@ -14,7 +14,7 @@
     "@mantine/hooks": "^4.0.1",
     "@mantine/next": "^4.0.0",
     "@mantine/notifications": "^4.0.1",
-    "cookies": "^0.8.0",
+    "cookie": "^0.4.2",
     "js-cookie": "^3.0.1",
     "next": "12.1.0",
     "react": "17.0.2",

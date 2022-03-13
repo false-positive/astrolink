@@ -4,6 +4,7 @@ import FileList from '../../../../components/FileList';
 
 import { getFiles } from '../../../../api/file';
 import FileUploadDropzone from '../../../../components/FileUploadDropzone';
+import withAuth from '../../../../lib/withAuth';
 
 const AllFiles = ({ files }) => {
   return (
@@ -22,7 +23,7 @@ const AllFiles = ({ files }) => {
 
 export default AllFiles;
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = withAuth(async ({ params }) => {
   const { projectId } = params;
   const files = await getFiles(projectId);
   return {
@@ -30,4 +31,4 @@ export const getServerSideProps = async ({ params }) => {
       files,
     },
   };
-};
+});

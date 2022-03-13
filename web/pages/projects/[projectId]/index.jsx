@@ -1,6 +1,5 @@
 import {
   Title,
-  Text,
   Center,
   Container,
   Button,
@@ -20,6 +19,7 @@ import { getProject } from '../../../api/project';
 import { getMilestones, setMilestones } from '../../../api/milestone';
 import { getTasks } from '../../../api/task';
 import MilestoneAccordion1 from '../../../components/MilestoneAccordion1';
+import withAuth from '../../../lib/withAuth';
 
 export default function Home({ project, users, files }) {
   const [opened, setOpened] = useState(false);
@@ -96,7 +96,7 @@ export default function Home({ project, users, files }) {
   );
 }
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = withAuth(async ({ params }) => {
   const { projectId } = params;
 
   const milestones = await getMilestones(projectId);
@@ -129,4 +129,4 @@ export const getServerSideProps = async ({ params }) => {
       notFound: true,
     };
   }
-};
+});

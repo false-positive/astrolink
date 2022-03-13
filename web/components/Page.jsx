@@ -75,7 +75,7 @@ const Page = ({ children }) => {
               sx={{ position: 'fixed', right: '1rem', top: '1.3rem' }}
               control={
                 <UnstyledButton>
-                  <UserAvatar username="Amo"></UserAvatar>
+                  <UserAvatar username="Bozhidar"></UserAvatar>
                 </UnstyledButton>
               }
             >

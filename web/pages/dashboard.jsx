@@ -2,6 +2,7 @@ import { Container, Group } from '@mantine/core';
 import { getProjects } from '../api/project';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard';
+import withAuth from '../lib/withAuth';
 
 const DashboardPage = ({ projects }) => {
   return (
@@ -19,11 +20,11 @@ const DashboardPage = ({ projects }) => {
 
 export default DashboardPage;
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = withAuth(async () => {
   const projects = await getProjects();
   return {
     props: {
       projects,
     },
   };
-};
+});

@@ -1,4 +1,4 @@
-import Cookies from 'cookies';
+import Cookies from 'js-cookie';
 import {
   Button,
   Center,
@@ -20,6 +20,7 @@ import { getProject, setProject } from '../../api/project';
 import UsersRow from '../../components/UsersRow';
 import Page from '../../components/Page';
 import ProjectCard from '../../components/ProjectCard';
+import withAuth from '../../lib/withAuth';
 
 const MyTeams = ({ teams, projects }) => {
   const [opened, setOpened] = useState(false);
@@ -114,9 +115,8 @@ const MyTeams = ({ teams, projects }) => {
 
 export default MyTeams;
 
-export const getServerSideProps = async ({ req, res }) => {
-  const cookies = new Cookies(req, res);
-  const token = cookies.get('token');
+export const getServerSideProps = withAuth(async ({ req, res }) => {
+  const token = Cookies.get('token');
 
   const user = await getUser(token);
 
@@ -163,4 +163,4 @@ export const getServerSideProps = async ({ req, res }) => {
       projects,
     },
   };
-};
+});

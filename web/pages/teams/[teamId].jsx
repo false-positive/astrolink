@@ -18,6 +18,7 @@ import { setProject } from '../../api/project';
 import { getTeam } from '../../api/team';
 import Page from '../../components/Page';
 import UsersRow from '../../components/UsersRow';
+import withAuth from '../../lib/withAuth';
 
 const TeamDetailPage = ({ team }) => {
   const [opened, setOpened] = useState(false);
@@ -97,13 +98,13 @@ const TeamDetailPage = ({ team }) => {
 
 export default TeamDetailPage;
 
-export const getServerSideProps = async ({ params }) => {
+export const getServerSideProps = withAuth(async ({ params }) => {
   const { teamId } = params;
   try {
     const team = await getTeam(teamId);
     return {
       props: {
-        // team,
+        team,
       },
     };
   } catch {
@@ -111,4 +112,4 @@ export const getServerSideProps = async ({ params }) => {
       notFound: true,
     };
   }
-};
+});
