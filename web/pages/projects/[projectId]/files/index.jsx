@@ -4,10 +4,10 @@ import { useState } from 'react/cjs/react.development';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNotifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import Page from '../../../components/Page';
-import FileList from '../../../components/FileList';
+import Page from '../../../../components/Page';
+import FileList from '../../../../components/FileList';
 
-import { getFiles, uploadFile } from '../../../api/file';
+import { getFiles, uploadFile } from '../../../../api/file';
 
 export const dropzoneChildren = () => (
   <Group
@@ -20,7 +20,7 @@ export const dropzoneChildren = () => (
         Drag images here or click to select files
       </Text>
       <Text size="sm" color="dimmed" inline mt={7}>
-        Attach as many files as you like, each file should not exceed 5mb
+        Attach as many files as you like.
       </Text>
     </div>
   </Group>
@@ -80,7 +80,7 @@ export const getServerSideProps = async ({ params }) => {
   const files = await getFiles(projectId);
   return {
     props: {
-      files: files.reverse(),
+      files,
     },
   };
 };
