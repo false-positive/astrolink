@@ -99,7 +99,7 @@ export const getServerSideProps = async ({ params }) => {
     const team = await getTeam(teamId);
     return {
       props: {
-        team,
+        // team,
       },
     };
   } catch {

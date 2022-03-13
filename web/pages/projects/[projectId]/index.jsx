@@ -73,7 +73,7 @@ export default function Home({ project, users, files }) {
                 {...register('description')}
                 name="description"
                 placeholder="Description"
-                label="Description"
+                label="Milestone Description"
                 size="md"
                 mb="4rem"
                 required

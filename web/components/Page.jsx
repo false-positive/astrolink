@@ -65,13 +65,10 @@ const Page = ({ children }) => {
                   Dashboard
                 </Anchor>
               </Link>
-              <Link href="/dashboard" passHref>
+              <Link href="/teams" passHref>
                 <Anchor as="a" className={classes.link}>
                   My Teams
                 </Anchor>
-              </Link>
-              <Link href="/dashboard" passHref>
-                <Anchor as="a" className={classes.link}></Anchor>
               </Link>
             </div>
             <Menu
