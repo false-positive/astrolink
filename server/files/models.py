@@ -9,7 +9,7 @@ def get_project_directory(instance, filename):
 
 
 def get_rev_directory(instance, filename):
-    return './files/media/{0}/{1}/revs/{2}'.format(instance.parent.project.team.name, instance.parent.project.name, instance.parent.name)
+    return './files/media/{0}/{1}/revs/{2}'.format(instance.parent.project.team.name, instance.parent.project.name, filename)
 
 
 class Rev(models.Model):
