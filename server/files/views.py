@@ -1,3 +1,5 @@
+import filecmp
+
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.core.files.storage import FileSystemStorage
@@ -36,22 +38,52 @@ class FileList(APIView):
     def post(self, request, pk, format=None):
         project = get_object_or_404(Project, pk=pk)
         rev_file = project.file_set.filter(name=request.data['name']).first()
+        
         if rev_file:
-            f_tmp = open(rev_file.file.path, 'rb')
-            FILE = FileObject(f_tmp)
-            serializer = RevSerializer(data={'name': rev_file.name, 'parent': rev_file.pk, 'file': FILE, 'mimetype': rev_file.mimetype})
-            if not serializer.is_valid():
+            temp_serializer = FileSerializer(data=request.data)
+            
+            if temp_serializer.is_valid():
+                temp_serializer.save(project=project, query_id=0)
+            
+            tmp_file_ptr = get_object_or_404(project.file_set, query_id=0)
+            tmp_path = tmp_file_ptr.file.path
+            
+            if not filecmp.cmp(tmp_path, rev_file.file.path, shallow=True):
+                tmp_file_ptr.delete()
+                f_tmp = open(rev_file.file.path, 'rb')
+                FILE = FileObject(f_tmp)
+                serializer = RevSerializer(data={'name': rev_file.name, 'parent': rev_file.pk, 'file': FILE, 'mimetype': rev_file.mimetype})
+                
+                if not serializer.is_valid():
+                    print(serializer.errors)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+                serializer.save(revision=self.__get_revision__(rev_file))
+                FILE.close()
+                rev_file.file.delete()
+                serializer = FileSerializer(rev_file, data=request.data)
+                
+                if serializer.is_valid():
+                    serializer.save(query_id=self.__get_file_id__(project))
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            serializer.save(revision=self.__get_revision__(rev_file))
-            FILE.close()
-            rev_file.file.delete()
-            serializer = FileSerializer(rev_file, data=request.data)
-            if serializer.is_valid():
-                serializer.save(query_id=self.__get_file_id__(project))
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                serializer.save(revision=self.__get_revision__(rev_file))
+                FILE.close()
+                rev_file.file.delete()
+                serializer = FileSerializer(rev_file, data=request.data)
+                
+                if serializer.is_valid():
+                    serializer.save(query_id=self.__get_file_id__(project))
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            tmp_file_ptr.delete()
+            return Response({"result": "file already exists and its contents are the same"}, status=status.HTTP_400_BAD_REQUEST)
+        
         else:
             serializer = FileSerializer(data=request.data)
+            
             if serializer.is_valid():
                 serializer.save(project=project, query_id=self.__get_file_id__(project))
                 return Response(serializer.data, status=status.HTTP_201_CREATED)

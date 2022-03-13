@@ -17,6 +17,12 @@ const toApiProject = ({ id, team, files, ...rest }) => ({
   ...rest,
 });
 
+export const getProjects = async () => {
+  const response = await makeRequest('/projectsr');
+  const apiProjects = await response.json();
+  return apiProjects.map(fromApiProject);
+};
+
 export const getProject = async (projectId) => {
   const response = await makeRequest(`/projects/${projectId}`);
   const apiProject = await response.json();

@@ -1,24 +1,22 @@
 import { Divider, Menu, Modal } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Download, Files, Trash, Upload } from 'tabler-icons-react';
-import { deleteFile } from '../api/file';
+import { Download, Trash } from 'tabler-icons-react';
+import { deleteFile, deleteRevision } from '../api/file';
 import FileUploadDropzone from './FileUploadDropzone';
-import StyledLink from './StyledLink';
 
-const FileMenu = ({ file }) => {
+const RevisionMenu = ({ revision, project, file }) => {
   const [openedRevise, setOpenedRevise] = useState(false);
   const router = useRouter();
 
   const handleDelete = async () => {
-    if (window.confirm('Delete file?')) {
-      deleteFile(file.project, file.id);
+    if (window.confirm('Delete revision?')) {
+      deleteRevision(project, file, revision.revision);
       router.push(router.asPath, null, { scroll: false });
     }
   };
 
-  const downloadUrl = `${process.env.NEXT_PUBLIC_API_URL}/projects/${file.project}/files/${file.id}/download`;
-  const allFilesUrl = `/projects/${file.project}/files`;
+  const downloadUrl = `${process.env.NEXT_PUBLIC_API_URL}/projects/${project}/files/${file}/revisions/${revision.revision}/download`;
 
   return (
     <>
@@ -29,7 +27,7 @@ const FileMenu = ({ file }) => {
         onClose={() => setOpenedRevise(false)}
         title="Create New Milestone"
       >
-        <FileUploadDropzone filename={file.name} />
+        <FileUploadDropzone filename={revision.name} />
       </Modal>
       <Menu>
         <Menu.Label>File</Menu.Label>
@@ -40,19 +38,6 @@ const FileMenu = ({ file }) => {
         >
           Download
         </Menu.Item>
-        <Menu.Item
-          icon={<Upload size={14} />}
-          onClick={() => setOpenedRevise(true)}
-        >
-          Upload new revision
-        </Menu.Item>
-        <Menu.Item
-          component={StyledLink}
-          href={allFilesUrl}
-          icon={<Files size={14} />}
-        >
-          All files from project
-        </Menu.Item>
         <Divider />
         <Menu.Label>Danger zone</Menu.Label>
         <Menu.Item
@@ -60,11 +45,11 @@ const FileMenu = ({ file }) => {
           icon={<Trash size={14} />}
           onClick={handleDelete}
         >
-          Delete file
+          Delete revision
         </Menu.Item>
       </Menu>
     </>
   );
 };
 
-export default FileMenu;
+export default RevisionMenu;

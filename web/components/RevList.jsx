@@ -2,6 +2,7 @@ import { Box, createStyles, Group, Text, UnstyledButton } from '@mantine/core';
 import { AiFillFileText } from 'react-icons/ai';
 import getDateWords from '../lib/utils/getDateWords';
 import FileMenu from './FileMenu';
+import RevisionMenu from './RevisionMenu';
 import StyledLink from './StyledLink';
 
 const useStyles = createStyles((theme, _params, _getRef) => {
@@ -25,31 +26,26 @@ const useStyles = createStyles((theme, _params, _getRef) => {
   };
 });
 
-const FileList = ({ files, lastModified = true }) => {
+const RevList = ({ revisions, project, file, lastModified = true }) => {
   const { classes } = useStyles();
+
   return (
     <Group>
-      {files.map((file) => (
-        <Box className={classes.filebox} key={file.id}>
+      {revisions.map((revision) => (
+        <Box className={classes.filebox} key={revision.revision}>
           <Group position="apart" spacing="xs" style={{ width: '100%' }}>
             <div>
               <Box as="span" sx={{ display: 'inline' }} px={2}>
                 <AiFillFileText className={classes.fileicon} />
               </Box>
-              <UnstyledButton
-                component={StyledLink}
-                sx={{ textDecoration: 'none' }}
-                href={`/projects/${file.project}/files/${file.id}/`}
-              >
-                {file.name}
-              </UnstyledButton>
+              {revision.name}
             </div>
             {lastModified && (
               <Text color="dimmed" size="sm">
-                Last Modified {getDateWords(new Date(file.lastModified))}
+                Last Modified {getDateWords(new Date(revision.last_modified))}
               </Text>
             )}
-            <FileMenu file={file} />
+            <RevisionMenu revision={revision} file={file} project={project} />
           </Group>
         </Box>
       ))}
@@ -57,4 +53,4 @@ const FileList = ({ files, lastModified = true }) => {
   );
 };
 
-export default FileList;
+export default RevList;
