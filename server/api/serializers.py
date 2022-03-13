@@ -34,11 +34,11 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    teams = serializers.StringRelatedField(source='team_set', many=True)
-
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'teams', 'uuid']
+        fields = ['first_name', 'last_name', 'email', 'team_set', 'uuid']
+        depth= 1
+    
 
 
 class TeamWriteSerializer(serializers.ModelSerializer):
