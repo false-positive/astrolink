@@ -1,22 +1,38 @@
+/* eslint-disable camelcase */
 import makeRequest, { makeNonJsonRequest } from './request';
 
-// eslint-disable-next-line camelcase
-export const fromApiFiles = ({ pk, query_id, ...rest }) => ({
-  id: pk,
-  // eslint-disable-next-line camelcase
-  queryId: query_id,
+export const fromApiFiles = ({
+  query_id,
+  last_modified,
+  created_at,
+  ...rest
+}) => ({
+  id: query_id,
+  lastModified: last_modified,
+  createdAt: created_at,
   ...rest,
 });
-export const toApiFiles = ({ queryId, ...rest }) => ({
-  pk: rest.id,
-  query_id: queryId,
+export const toApiFiles = ({ id, lastModified, createdAt, ...rest }) => ({
+  query_id: id,
+  last_modified: lastModified,
+  created_at: createdAt,
   ...rest,
 });
 
 export const getFiles = async (projectId) => {
   const response = await makeRequest(`/projects/${projectId}/files`);
   const apiFiles = await response.json();
-  return apiFiles.map((rest) => ({ ...rest, id: rest.pk }));
+  return apiFiles.map(fromApiFiles);
+};
+
+export const getFile = async (projectId, fileId) => {
+  const response = await makeRequest(`/projects/${projectId}/files/${fileId}`);
+  if (response.ok) {
+    const apiFile = await response.json();
+    return fromApiFiles(apiFile);
+  }
+  const errors = await response.json();
+  throw errors;
 };
 
 export const uploadFile = (projectId, file) => {
@@ -24,10 +40,17 @@ export const uploadFile = (projectId, file) => {
   formdata.append('name', file.name);
   formdata.append('project', projectId);
   formdata.append('file', file, file.name);
-  formdata.append('mimetype', file.type);
+  formdata.append('mimetype', file.type || 'application/octet-stream');
 
   return makeNonJsonRequest(`/projects/${projectId}/files`, {
     method: 'POST',
     body: formdata,
   });
+};
+
+export const deleteFile = async (projectId, fileId) => {
+  const response = makeRequest(`/projects/${projectId}/files/${fileId}`, {
+    method: 'DELETE',
+  });
+  return response.status === 204;
 };

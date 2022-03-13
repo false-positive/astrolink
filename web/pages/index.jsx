@@ -23,8 +23,6 @@ export default function Home() {
             Sign up
           </Button>
         </Link>
-        {/* <Link href="/about">Hello</Link>
-        <Link href="/about">World</Link> */}
       </Group>
 
       <WebsiteTitle order={1} fontSize="5rem"></WebsiteTitle>
