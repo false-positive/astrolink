@@ -21,7 +21,7 @@ const ProgressCard = ({ milestones }) => {
     return activeIdx >= 0 ? milestones[activeIdx] : null;
   }, [accordionState, milestones]);
   return (
-    <Group sx={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
+    <Group sx={{ width: '100%', flex: 3, alignItems: 'flex-start' }}>
       <Card
         px={10}
         py={35}
