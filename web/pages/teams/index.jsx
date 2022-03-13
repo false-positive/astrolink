@@ -16,11 +16,12 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import getUser from '../../api/token';
 import { getTeam } from '../../api/team';
-import { setProject } from '../../api/project';
+import { getProject, setProject } from '../../api/project';
 import UsersRow from '../../components/UsersRow';
 import Page from '../../components/Page';
+import ProjectCard from '../../components/ProjectCard';
 
-const MyTeams = ({ teams }) => {
+const MyTeams = ({ teams, projects }) => {
   const [opened, setOpened] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const { register, handleSubmit, reset } = useForm();
@@ -37,7 +38,7 @@ const MyTeams = ({ teams }) => {
 
   return (
     <Page>
-      {teams.map((team) => (
+      {teams.map((team, i) => (
         <div key={team.uuid}>
           <Container pt={25}>
             <Title>{team.name}</Title>
@@ -59,11 +60,17 @@ const MyTeams = ({ teams }) => {
               Create Project
             </Button>
 
-            <Group position="center" direction="column" spacing="lg">
-              <Text>TODOOOOO.....</Text>
-              {/* {team.projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))} */}
+            <Group
+              position="center"
+              direction="column"
+              spacing="lg"
+              style={{ width: '100%' }}
+            >
+              {projects[i].map((project) => (
+                <div key={project.id} style={{ width: '100%' }}>
+                  <ProjectCard style={{ width: '100%' }} project={project} />
+                </div>
+              ))}
             </Group>
           </Container>
         </div>
@@ -113,20 +120,47 @@ export const getServerSideProps = async ({ req, res }) => {
 
   const user = await getUser(token);
 
+  const projects = [];
+
   const teams = await Promise.all(
     user.team_set.map(async (team) => {
       const teamApi = await getTeam(team.uuid);
 
-      return {
+      const newTeam = {
         ...team,
         ...teamApi,
       };
+
+      // projects.push(
+      projects.unshift(
+        await Promise.all(
+          newTeam.projects.map(async (project) => {
+            const projectApi = await getProject(project.id);
+            return {
+              ...project,
+              ...projectApi,
+            };
+          })
+        )
+      );
+      // );
+
+      // .map(async (project) => {
+      //   const projectApi = await getTeam(project.id);
+      //   return {
+      //     ...project,
+      //     ...projectApi,
+      //   };
+      // });
+
+      return newTeam;
     })
   );
 
   return {
     props: {
       teams,
+      projects,
     },
   };
 };

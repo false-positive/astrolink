@@ -37,8 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'team_set', 'uuid']
-        depth= 1
-    
+        depth = 1
 
 
 class TeamWriteSerializer(serializers.ModelSerializer):
@@ -90,13 +89,11 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class TeamReadSerializer(serializers.ModelSerializer):
-    projects = serializers.StringRelatedField(
-        source='project_set', many=True, required=False)
     members = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Team
-        fields = ['name', 'description', 'projects', 'members', 'uuid']
+        fields = ['name', 'description', 'project_set', 'members', 'uuid']
         depth = 1
 
 

@@ -17,7 +17,7 @@ import StyledLink from './StyledLink';
 
 const ProjectCard = ({ project }) => {
   return (
-    <Card shadow="sm" sx={{ width: '100%' }}>
+    <Card shadow="sm" style={{ width: '100%' }}>
       <Card.Section p="lg">
         <Group position="apart" grow>
           <Box>
@@ -28,7 +28,7 @@ const ProjectCard = ({ project }) => {
             >
               <Title>{project.name}</Title>
             </UnstyledButton>
-            {/* <Text>{project.description}</Text> */}
+            <Text>{project.description}</Text>
             <TypographyStylesProvider>
               <div dangerouslySetInnerHTML={{ __html: project.description }} />
             </TypographyStylesProvider>

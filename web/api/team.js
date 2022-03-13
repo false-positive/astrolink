@@ -5,16 +5,16 @@ import {
 import makeRequest from './request';
 import { fromApiUser, toApiUser } from './user';
 
-export const fromApiTeam = ({ uuid, projects, members, ...rest }) => ({
+export const fromApiTeam = ({ uuid, project_set, members, ...rest }) => ({
   ...rest,
   members: members.map(fromApiUser),
-  projects: projects.map(fromApiProjectShallow),
+  projects: project_set.map(fromApiProjectShallow),
   id: uuid,
 });
-export const toApiTeam = ({ id, projects, members, ...rest }) => ({
+export const toApiTeam = ({ id, project_set, members, ...rest }) => ({
   ...rest,
   members: members.map(toApiUser),
-  project: projects.map(toApiProjectShallow),
+  project: project_set.map(toApiProjectShallow),
   uuid: id,
 });
 
