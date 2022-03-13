@@ -72,8 +72,8 @@ export default function Home({ project, users, files }) {
               <Textarea
                 {...register('description')}
                 name="description"
-                placeholder="Milestone Description"
-                label="Milestone Description"
+                placeholder="Description"
+                label="Description"
                 size="md"
                 mb="4rem"
                 required
