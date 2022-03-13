@@ -20,7 +20,7 @@ export const dropzoneChildren = () => (
         Drag images here or click to select files
       </Text>
       <Text size="sm" color="dimmed" inline mt={7}>
-        Attach as many files as you like, each file should not exceed 5mb
+        Attach as many files as you like.
       </Text>
     </div>
   </Group>
@@ -80,7 +80,7 @@ export const getServerSideProps = async ({ params }) => {
   const files = await getFiles(projectId);
   return {
     props: {
-      files: files.reverse(),
+      files,
     },
   };
 };

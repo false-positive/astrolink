@@ -25,6 +25,16 @@ export const getFiles = async (projectId) => {
   return apiFiles.map(fromApiFiles);
 };
 
+export const getFile = async (projectId, fileId) => {
+  const response = await makeRequest(`/projects/${projectId}/files/${fileId}`);
+  if (response.ok) {
+    const apiFile = await response.json();
+    return fromApiFiles(apiFile);
+  }
+  const errors = await response.json();
+  throw errors;
+};
+
 export const uploadFile = (projectId, file) => {
   const formdata = new FormData();
   formdata.append('name', file.name);
