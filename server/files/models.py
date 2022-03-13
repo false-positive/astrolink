@@ -15,7 +15,7 @@ def get_rev_directory(instance, filename):
 class Rev(models.Model):
     name = models.CharField(max_length=60)
     parent = models.ForeignKey('files.File', on_delete=models.CASCADE)
-    file = models.FileField(upload_to=get_rev_directory)
+    file = models.FileField(upload_to=get_rev_directory, max_length=500)
     revision = models.IntegerField(editable=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     last_modified = models.DateTimeField(auto_now=True, null=True)
@@ -28,7 +28,7 @@ class Rev(models.Model):
 class File(models.Model):
     name = models.CharField(max_length=60)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    file = models.FileField(upload_to=get_project_directory)
+    file = models.FileField(upload_to=get_project_directory, max_length=500)
     query_id = models.IntegerField(editable=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     last_modified = models.DateTimeField(auto_now=True, null=True)
