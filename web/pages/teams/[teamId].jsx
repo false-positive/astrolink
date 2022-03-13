@@ -9,6 +9,7 @@ import {
   Textarea,
   TextInput,
   Title,
+  TypographyStylesProvider,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -36,7 +37,10 @@ const TeamDetailPage = ({ team }) => {
     <Page>
       <Container pt={25}>
         <Title>{team.name}</Title>
-        <Text pb={15}>{team.description}</Text>
+        {/* <Text pb={15}>{team.description}</Text> */}
+        <TypographyStylesProvider pb={15}>
+          <div dangerouslySetInnerHTML={{ __html: team.description }} />
+        </TypographyStylesProvider>
         <UsersRow users={team.members} />
       </Container>
       <Container pt={25}>
