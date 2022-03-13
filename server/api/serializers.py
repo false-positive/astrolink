@@ -12,7 +12,6 @@ from api.models import User, Team, Project, Milestone, Task
 from files.serializers import FileSerializer
 
 
-
 class TeamField(serializers.RelatedField):
 
     queryset = Team.objects.all()
@@ -24,7 +23,8 @@ class TeamField(serializers.RelatedField):
         try:
             return get_object_or_404(self.get_queryset(), pk=uuid)
         except Http404:
-            raise serializers.ValidationError({'team': f'Team with"{uuid}" not found'})
+            raise serializers.ValidationError(
+                {'team': f'Team with"{uuid}" not found'})
 
 
 class AuthUserSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    teams = serializers.StringRelatedField(source='team_set',many=True)
+    teams = serializers.StringRelatedField(source='team_set', many=True)
 
     class Meta:
         model = User
@@ -42,8 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TeamWriteSerializer(serializers.ModelSerializer):
-    projects = serializers.StringRelatedField(source='project_set',many=True, required=False)
-
+    projects = serializers.StringRelatedField(
+        source='project_set', many=True, required=False)
 
     def __get_members(self, member_ids):
         members = []
@@ -59,7 +59,6 @@ class TeamWriteSerializer(serializers.ModelSerializer):
         team.members.set(members_data)
         return team
 
-
     def update(self, instance, validated_data):
         print(validated_data)
         members_data = validated_data.pop('members')
@@ -71,7 +70,7 @@ class TeamWriteSerializer(serializers.ModelSerializer):
             except KeyError:
                 pass
         instance.members.set(members_data)
-        
+
         instance.save()
         return instance
 
@@ -80,9 +79,9 @@ class TeamWriteSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'projects', 'members', 'uuid']
 
 
-
 class MilestoneSerializer(serializers.ModelSerializer):
-    tasks = serializers.StringRelatedField(source='task_set', many=True, required=False)
+    tasks = serializers.StringRelatedField(
+        source='task_set', many=True, required=False)
 
     class Meta:
         model = Milestone
@@ -91,8 +90,10 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 
 class TeamReadSerializer(serializers.ModelSerializer):
-    projects = serializers.StringRelatedField(source='project_set',many=True, required=False)
+    projects = serializers.StringRelatedField(
+        source='project_set', many=True, required=False)
     members = UserSerializer(many=True, read_only=True)
+
     class Meta:
         model = Team
         fields = ['name', 'description', 'projects', 'members', 'uuid']
@@ -100,7 +101,8 @@ class TeamReadSerializer(serializers.ModelSerializer):
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
-    tasks = serializers.StringRelatedField(source='task_set', many=True, required=False)
+    tasks = serializers.StringRelatedField(
+        source='task_set', many=True, required=False)
 
     class Meta:
         model = Milestone
@@ -110,9 +112,10 @@ class MilestoneSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     team = TeamReadSerializer(read_only=True)
-    milestones = MilestoneSerializer(source='milestone_set', many=True, read_only=True)
+    milestones = MilestoneSerializer(
+        source='milestone_set', many=True, read_only=True)
     files = FileSerializer(source='file_set', many=True, read_only=True)
-    
+
     class Meta:
         model = Project
         fields = ['name', 'team', 'description', 'milestones', 'files', 'uuid']

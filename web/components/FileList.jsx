@@ -1,6 +1,8 @@
-import { Box, createStyles, Group, Text } from '@mantine/core';
+import { Box, createStyles, Group, Text, UnstyledButton } from '@mantine/core';
 import { AiFillFileText } from 'react-icons/ai';
+import getDateWords from '../lib/utils/getDateWords';
 import FileMenu from './FileMenu';
+import StyledLink from './StyledLink';
 
 const useStyles = createStyles((theme, _params, _getRef) => {
   const fileboxColor =
@@ -24,13 +26,6 @@ const useStyles = createStyles((theme, _params, _getRef) => {
 });
 
 const FileList = ({ files, lastModified = true }) => {
-  const getDateWords = (date) => {
-    const month = date.toLocaleString('default', { month: 'long' });
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
-
   const { classes } = useStyles();
   return (
     <Group>
@@ -41,7 +36,13 @@ const FileList = ({ files, lastModified = true }) => {
               <Box as="span" sx={{ display: 'inline' }} px={2}>
                 <AiFillFileText className={classes.fileicon} />
               </Box>
-              {file.name}
+              <UnstyledButton
+                component={StyledLink}
+                sx={{ textDecoration: 'none' }}
+                href={`/projects/${file.project}/files/${file.id}/`}
+              >
+                {file.name}
+              </UnstyledButton>
             </div>
             {lastModified && (
               <Text color="dimmed" size="sm">

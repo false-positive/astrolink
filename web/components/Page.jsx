@@ -9,9 +9,12 @@ import {
   Center,
   Menu,
   UnstyledButton,
+  Box,
 } from '@mantine/core';
 import { useState } from 'react';
+import Link from 'next/link';
 import UserAvatar from './UserAvatar';
+import WebsiteTitle from './landing/WebsiteTitle';
 
 const useStyles = createStyles((theme) => ({
   res_navbar: {
@@ -43,6 +46,10 @@ const Page = ({ children }) => {
       navbarOffsetBreakpoint="sm"
       header={
         <Header height={50} className={classes.navbar}>
+          <Box sx={{ position: 'fixed', left: '1rem', top: '.7rem' }}>
+            <WebsiteTitle order={2} fontSize="2rem"></WebsiteTitle>
+          </Box>
+
           <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
             <Burger
               opened={opened}
@@ -53,9 +60,19 @@ const Page = ({ children }) => {
           </MediaQuery>
           <Center>
             <div className={classes.links}>
-              <Anchor className={classes.link}>Home</Anchor>
-              <Anchor className={classes.link}>Features</Anchor>
-              <Anchor className={classes.link}>Pricing</Anchor>
+              <Link href="/dashboard" passHref>
+                <Anchor as="a" className={classes.link}>
+                  Dashboard
+                </Anchor>
+              </Link>
+              <Link href="/dashboard" passHref>
+                <Anchor as="a" className={classes.link}>
+                  My Teams
+                </Anchor>
+              </Link>
+              <Link href="/dashboard" passHref>
+                <Anchor as="a" className={classes.link}></Anchor>
+              </Link>
             </div>
             <Menu
               sx={{ position: 'fixed', right: '1rem', top: '1.3rem' }}

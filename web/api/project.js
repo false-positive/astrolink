@@ -1,17 +1,18 @@
 import { fromApiTeamShallow, toApiTeamShallow } from './converters/team';
+import { fromApiFiles, toApiFiles } from './file';
 import makeRequest from './request';
 
 // eslint-disable-next-line camelcase
-const fromApiProject = ({ uuid, team, file_set, ...rest }) => ({
+const fromApiProject = ({ uuid, team, files, ...rest }) => ({
   id: uuid,
   // eslint-disable-next-line camelcase
-  files: file_set,
+  files: files.map(fromApiFiles),
   team: fromApiTeamShallow(team),
   ...rest,
 });
 const toApiProject = ({ id, team, files, ...rest }) => ({
   uuid: id,
-  file_set: files,
+  files: files.map(toApiFiles),
   team: toApiTeamShallow(team),
   ...rest,
 });
