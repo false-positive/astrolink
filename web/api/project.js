@@ -10,9 +10,9 @@ export const fromApiProject = ({ uuid, team, files, ...rest }) => ({
   team: fromApiTeamShallow(team),
   ...rest,
 });
-export const toApiProject = ({ id, team, files, ...rest }) => ({
+export const toApiProject = ({ id, team, file, ...rest }) => ({
   uuid: id,
-  files: files.map(toApiFiles),
+  // files: files.map(toApiFiles),
   team: toApiTeamShallow(team),
   ...rest,
 });
@@ -33,7 +33,7 @@ export const setProject = async (teamId, project) => {
   const response = await makeRequest(`/projects`, {
     method: 'POST',
     body: JSON.stringify({
-      ...toApiProject(project),
+      ...project,
       team: teamId,
     }),
   });
