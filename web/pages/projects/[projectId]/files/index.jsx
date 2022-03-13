@@ -4,10 +4,10 @@ import { useState } from 'react/cjs/react.development';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNotifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import Page from '../../../components/Page';
-import FileList from '../../../components/FileList';
+import Page from '../../../../components/Page';
+import FileList from '../../../../components/FileList';
 
-import { getFiles, uploadFile } from '../../../api/file';
+import { getFiles, uploadFile } from '../../../../api/file';
 
 export const dropzoneChildren = () => (
   <Group
